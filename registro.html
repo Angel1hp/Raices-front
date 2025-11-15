@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro</title>
+  <link rel="stylesheet" href="css/registro.css">
+  <link rel="stylesheet" href="css/notifications.css">
+</head>
+<body>
+  <div id="navbar-container"></div>
+<script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar-container").innerHTML = html;
+      });
+  </script>
+
+  <div class="content-wrapper">
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Crear Cuenta</h2>
+        <p class="subtitle">Completa el formulario para registrarte</p>
+      </div>
+
+    <form id="formRegistro">
+      <div class="form-row">
+        <div class="input-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" placeholder="Ingresa tu nombre" name="nombre" required>
+        </div>
+
+        <div class="input-group">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" placeholder="Ingresa tu apellido" name="apellido" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="input-group">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" placeholder="ejemplo@correo.com" name="email" required>
+        </div>
+
+        <div class="input-group">
+          <label for="usuario">Usuario</label>
+          <input type="text" id="usuario" placeholder="Elige un usuario" name="usuario" required>
+        </div>
+      </div>
+
+      <!-- ✅ CONTRASEÑA CON MEDIDOR DE SEGURIDAD -->
+      <div class="form-row">
+        <div class="input-group">
+          <label for="contrasena">Contraseña</label>
+          <div class="password-wrapper">
+            <input type="password" id="contrasena" placeholder="Mínimo 6 caracteres" name="contrasena" required>
+            <button type="button" class="toggle-password" id="togglePassword">
+              <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <!-- Medidor de seguridad -->
+          <div class="password-strength">
+            <div class="password-strength-bar">
+              <div class="password-strength-fill" id="strengthBar"></div>
+            </div>
+            <div class="password-strength-text" id="strengthText">Ingresa una contraseña</div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" placeholder="999 999 999" name="telefono" required>
+        </div>
+      </div>
+
+      
+      <div class="form-row">
+        <div class="input-group">
+          <label for="tipo_documento">Tipo de Documento</label>
+          <select id="tipo_documento" name="tipo_documento_id" required>
+            <option value="">Cargando...</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="numero_documento">Número de Documento</label>
+          <input type="text" id="numero_documento" placeholder="12345678" name="numero_documento" required>
+        </div>
+      </div>
+
+      <!-- ✅ RUC Y GÉNERO -->
+      <div class="form-row">
+        <div class="input-group">
+          <label for="ruc">
+            RUC 
+            <span class="opcional">(Opcional)</span>
+          </label>
+          <input type="text" id="ruc" placeholder="20123456789" name="ruc" maxlength="11">
+          <small class="input-help">Solo si eres empresa o tienes RUC</small>
+        </div>
+
+        <div class="input-group">
+          <label for="genero">Género</label>
+          <select id="genero" name="genero_id" required>
+            <option value="">Cargando...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ✅ SELECTORES CASCADA: DEPARTAMENTO → PROVINCIA → DISTRITO -->
+      <div class="form-row">
+        <div class="input-group">
+          <label for="departamento">Departamento</label>
+          <select id="departamento" required>
+            <option value="">Cargando...</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="provincia">Provincia</label>
+          <select id="provincia" required disabled>
+            <option value="">Selecciona departamento primero</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group full-width">
+        <label for="distrito">Distrito</label>
+        <select id="distrito" name="distrito_id" required disabled>
+          <option value="">Selecciona provincia primero</option>
+        </select>
+      </div>
+
+      <div class="input-group full-width">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" placeholder="Ingresa tu dirección completa" name="direccion" required>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <span>Registrarse</span>
+      </button>
+
+      <p class="login-link">¿Ya tienes cuenta? <a href="login.html">Inicia Sesión</a></p>
+    </form>
+  </div>
+
+  <script src="js/registro.js"></script>
+</body>
+</html>

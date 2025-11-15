@@ -1,0 +1,61 @@
+/* Notificaciones */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 99999;
+  animation: slideInRight 0.3s ease;
+  min-width: 280px;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+.notification.success {
+  background: #28a745;
+  color: white;
+}
+
+.notification.error {
+  background: #dc3545;
+  color: white;
+}
+
+.notification.warning {
+  background: #ff9800;
+  color: white;
+}
+
+.notification.info {
+  background: #17a2b8;
+  color: white;
+}
+
+.notification.hide {
+  animation: slideOutRight 0.3s ease forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

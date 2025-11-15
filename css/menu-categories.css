@@ -1,0 +1,479 @@
+/* =====================================================
+   CARRUSEL DE CATEGORÍAS - DRAG TO SCROLL
+===================================================== */
+
+/* Variables para fácil ajuste */
+:root {
+  --cat-width: 280px;      /* Ancho de cada tarjeta */
+  --cat-height: 180px;     /* Alto de cada tarjeta */
+  --cat-gap: 8px;         /* Espacio entre tarjetas */
+  --visible-cards: 5;      /* Número de tarjetas visibles */
+}
+
+/* ===========================================================
+   SECCIÓN DE CATEGORÍAS (CONTENEDOR GENERAL)
+=========================================================== */
+.categories-section {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+/* ===========================================================
+   ENCABEZADO DE CATEGORÍAS
+=========================================================== */
+.categories-header {
+  text-align: center;
+  padding: 1.5rem 1rem 1rem;
+  background: linear-gradient(to bottom, #ffffff, #f8f8f8);
+  border-bottom: 2px solid #e0e0e0;
+  position: relative;
+}
+
+.categories-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2a2a2a;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: "Stack Sans Text", sans-serif;
+}
+
+.categories-icon {
+  font-size: 32px;
+  animation: rotateIcon 3s ease-in-out infinite;
+}
+
+@keyframes rotateIcon {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+.categories-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ===========================
+   CONTENEDOR PRINCIPAL
+=========================== */
+.categories-container-full {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Ocultar flechas */
+.category-scroll-btn {
+  display: none !important;
+}
+
+/* ===========================
+   WRAPPER - ANCHO EXACTO PARA 5 TARJETAS
+=========================== */
+.categories-wrapper {
+  width: calc((var(--cat-width) * var(--visible-cards)) + (var(--cat-gap) * (var(--visible-cards) - 1)));
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+  margin: -4px 0;
+}
+
+/* Ocultar scrollbar */
+.categories-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.categories-wrapper {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Cursor al arrastrar */
+.categories-wrapper.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  user-select: none;
+}
+
+/* ===========================
+   CONTENEDOR FLEX DE TARJETAS
+=========================== */
+.categories {
+  display: flex;
+  gap: var(--cat-gap);
+  flex-wrap: nowrap;
+  padding: 0;
+  margin: 0;
+}
+
+/* ===========================
+   TARJETA DE CATEGORÍA
+=========================== */
+.category-btn {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: var(--cat-width);
+  min-width: var(--cat-width);
+  height: var(--cat-height);
+  flex-shrink: 0;
+  background-color: #2c2c2c;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover suave */
+.category-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Overlay oscuro */
+.category-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.category-btn:hover::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+}
+
+/* Estado activo */
+.category-btn.active {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(140, 33, 56, 0.35), 0 0 0 3px rgba(140, 33, 56, 0.5);
+}
+
+.category-btn.active::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(140, 33, 56, 0.3) 0%,
+    rgba(140, 33, 56, 0.6) 60%,
+    rgba(140, 33, 56, 0.9) 100%
+  );
+}
+
+/* ===========================
+   NOMBRE DE CATEGORÍA
+=========================== */
+.category-name {
+  position: relative;
+  z-index: 2;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  padding: 24px 16px;
+  width: 100%;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover .category-name {
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.8);
+}
+
+.category-btn.active .category-name {
+  font-size: 19px;
+  letter-spacing: 0.8px;
+}
+
+/* ===========================
+   BADGE DE CONTADOR (OPCIONAL)
+=========================== */
+.category-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #2c2c2c;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover .category-badge {
+  transform: scale(1.05);
+  background: white;
+}
+
+.category-btn.active .category-badge {
+  background: #8c2138;
+  color: white;
+}
+
+/* ===========================
+   EFECTO SHINE (OPCIONAL)
+=========================== */
+.shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  transition: all 0.6s ease;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.category-btn:hover .shine {
+  opacity: 1;
+  transform: rotate(45deg) translate(50%, 50%);
+}
+
+/* ===========================
+   ANIMACIÓN DE ENTRADA
+=========================== */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.category-btn {
+  animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.category-btn:nth-child(1) { animation-delay: 0.05s; }
+.category-btn:nth-child(2) { animation-delay: 0.1s; }
+.category-btn:nth-child(3) { animation-delay: 0.15s; }
+.category-btn:nth-child(4) { animation-delay: 0.2s; }
+.category-btn:nth-child(5) { animation-delay: 0.25s; }
+.category-btn:nth-child(6) { animation-delay: 0.3s; }
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+/* Desktop grande (1400px+) - 5 tarjetas */
+@media (min-width: 1400px) {
+  :root {
+    --cat-width: 280px;
+    --cat-height: 180px;
+    --cat-gap: 20px;
+    --visible-cards: 5;
+  }
+}
+
+/* Desktop (1200-1400px) - 5 tarjetas */
+@media (max-width: 1400px) and (min-width: 1200px) {
+  :root {
+    --cat-width: 260px;
+    --cat-height: 170px;
+    --cat-gap: 18px;
+    --visible-cards: 5;
+  }
+  
+  .category-name {
+    font-size: 17px;
+    padding: 22px 14px;
+  }
+}
+
+/* Laptop (900-1200px) - 4 tarjetas */
+@media (max-width: 1200px) and (min-width: 900px) {
+  :root {
+    --cat-width: 240px;
+    --cat-height: 160px;
+    --cat-gap: 16px;
+    --visible-cards: 4;
+  }
+  
+  .category-name {
+    font-size: 16px;
+    padding: 20px 12px;
+  }
+}
+
+/* Tablet (640-900px) - 3 tarjetas */
+@media (max-width: 900px) and (min-width: 640px) {
+  :root {
+    --cat-width: 220px;
+    --cat-height: 150px;
+    --cat-gap: 16px;
+    --visible-cards: 3;
+  }
+  
+  .category-name {
+    font-size: 15px;
+    padding: 18px 10px;
+  }
+  
+  .category-badge {
+    top: 12px;
+    right: 12px;
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  /* Ajuste encabezado en tablet */
+  .categories-header h2 {
+    font-size: 26px;
+  }
+  
+  .categories-icon {
+    font-size: 30px;
+  }
+}
+
+/* Mobile (480-640px) - 2 tarjetas */
+@media (max-width: 640px) and (min-width: 480px) {
+  :root {
+    --cat-width: 180px;
+    --cat-height: 140px;
+    --cat-gap: 14px;
+    --visible-cards: 2;
+  }
+  
+  .category-btn {
+    border-radius: 16px;
+  }
+  
+  .category-name {
+    font-size: 14px;
+    padding: 16px 8px;
+  }
+  
+  .category-badge {
+    top: 10px;
+    right: 10px;
+    min-width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+  
+  /* Ajuste encabezado en mobile */
+  .categories-header {
+    padding: 1rem 0.5rem 0.75rem;
+  }
+  
+  .categories-header h2 {
+    font-size: 22px;
+  }
+  
+  .categories-icon {
+    font-size: 26px;
+  }
+  
+  .categories-subtitle {
+    font-size: 12px;
+  }
+}
+
+/* Mobile pequeño (<480px) - 1.8 tarjetas */
+@media (max-width: 480px) {
+  :root {
+    --cat-width: 160px;
+    --cat-height: 130px;
+    --cat-gap: 12px;
+    --visible-cards: 1.8;
+  }
+  
+  .category-btn {
+    border-radius: 14px;
+  }
+  
+  .category-name {
+    font-size: 13px;
+    padding: 14px 6px;
+  }
+  
+  /* Ajuste encabezado en mobile pequeño */
+  .categories-header h2 {
+    font-size: 20px;
+  }
+  
+  .categories-icon {
+    font-size: 24px;
+  }
+}
+
+.categories > .category-btn {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.categories {
+  gap: 0px !important;
+}
+
+/* Tablets y superiores */
+@media (min-width: 768px) {
+  .categories-header h2 {
+    font-size: 32px;
+  }
+  
+  .categories-icon {
+    font-size: 36px;
+  }
+  
+  .categories-subtitle {
+    font-size: 16px;
+  }
+}

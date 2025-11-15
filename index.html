@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Raíces - Inicio</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:wght@200..700&display=swap" rel="stylesheet">
+ 
+
+  <link rel="stylesheet" href="css/notifications.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/index-enhanced.css">
+  <link rel="stylesheet" href="css/modalmenu.css">
+  <link rel="stylesheet" href="css/auth-modal.css">
+  
+</head>
+<body>
+  <div id="navbar-container"></div>
+  
+  <!-- 🔥 NUEVO BANNER SLIDER PROFESIONAL -->
+<section class="hero-slider">
+  <div class="slider-container">
+
+    <!-- Slides -->
+    <div class="slide active">
+      <img src="img/banner1.jpg" alt="Banner 1">
+      <div class="slide-content">
+        <h1>Raíces</h1>
+        <p>Disfruta de una experiencia gastronómica única</p>
+        <a href="menu.html" class="btn-slide">Ver Menú</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="img/banner2.jpg" alt="Banner 2">
+      <div class="slide-content">
+        <h1>Tradición & Sabor</h1>
+        <p>Los mejores platos peruanos a un clic</p>
+        <a href="menu.html" class="btn-slide">Ordenar Ahora</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="img/banner3.jpg" alt="Banner 3">
+      <div class="slide-content">
+        <h1>Fresco y Delicioso</h1>
+        <p>Ingredientes de calidad. Sabor auténtico.</p>
+        <a href="menu.html" class="btn-slide">Explorar</a>
+      </div>
+    </div>
+
+    <!-- Flechas -->
+    <button class="slider-btn prev">❮</button>
+    <button class="slider-btn next">❯</button>
+
+    <!-- Indicadores -->
+    <div class="slider-dots"></div>
+
+  </div>
+</section>
+
+
+  
+
+  <!-- Nueva sección de categorías -->
+  <section class="categories-showcase">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Explora Nuestro Menú</h2>
+      <p class="section-subtitle">Descubre la diversidad de la cocina peruana</p>
+    </div>
+
+    <div class="categories-grid">
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Sección de platos destacados mejorada -->
+  <section class="featured-dishes">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Platos Destacados</h2>
+        <p class="section-subtitle">Los favoritos de nuestros clientes</p>
+      </div>
+      
+      <div id="featured-dishes-grid" class="featured-grid">
+        <!-- Spinner de carga -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando platos deliciosos...</p>
+        </div>
+      </div>
+      
+      <div class="section-cta">
+        <a href="menu.html" class="btn-see-more">
+          Ver Menú Completo
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de especialidades -->
+  <section class="specialties-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Nuestras Especialidades</h2>
+        <p class="section-subtitle">Platos únicos preparados con maestría</p>
+      </div>
+      
+      <div id="specialties-grid" class="specialties-grid">
+        <!-- Se llenarán dinámicamente -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de llamado a la acción -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">¿Listo para una experiencia gastronómica única?</h2>
+        <p class="cta-text">Explora nuestro menú completo y descubre todos los sabores del Perú</p>
+        <div class="cta-buttons">
+          <a href="menu.html" class="btn-cta primary">
+            <span>Ver Menú Completo</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+          <a href="login.html" class="btn-cta secondary">
+            Crear Cuenta
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Sabores del Perú - Experiencia Gastronómica</p>
+    </div>
+  </footer>
+
+  <!-- MODAL DEL CARRITO -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-header">
+      <div>
+        <h2>Mi Carrito <span class="cart-count" id="cartCountModal">0</span></h2>
+      </div>
+      <button class="cart-close" id="cartClose">×</button>
+    </div>
+    
+    <div class="cart-content">
+      <div class="cart-empty" id="cartEmpty">
+        <div class="cart-empty-icon">🛒</div>
+        <p>Tu carrito está vacío</p>
+      </div>
+      
+      <div class="cart-items" id="cartItems" style="display: none;"></div>
+    </div>
+    
+    <div class="cart-footer" id="cartFooter" style="display: none;">
+      <div class="cart-summary">
+        <div class="cart-summary-row">
+          <span class="cart-summary-label">Subtotal:</span>
+          <span class="cart-summary-value">S/ <span id="cartSubtotal">0.00</span></span>
+        </div>
+      </div>
+      
+      <div class="cart-total">
+        <span class="cart-total-label">Total:</span>
+        <span class="cart-total-value">S/ <span id="cartTotal">0.00</span></span>
+      </div>
+      
+      <button class="cart-checkout-btn" id="cartCheckout">
+        Proceder al Pago
+      </button>
+      
+      <button class="cart-clear-btn" id="cartClear">
+        Vaciar Carrito
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL DE AUTENTICACIÓN -->
+  <div class="auth-modal-overlay" id="authModalOverlay">
+    <div class="auth-modal">
+      <button class="auth-modal-close" id="authModalClose">×</button>
+      <div class="auth-modal-content">
+        <div class="auth-modal-icon"></div>
+        <h2 class="auth-modal-title">Inicia sesión para continuar</h2>
+        <p class="auth-modal-text">
+          Para agregar productos al carrito necesitas tener una cuenta
+        </p>
+        <div class="auth-modal-actions">
+          <a href="login.html" class="auth-modal-btn primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Iniciar sesión
+          </a>
+          <a href="registro.html" class="auth-modal-btn secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            Crear cuenta
+          </a>
+        </div>
+        <p class="auth-modal-footer">
+          ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/index-cart.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/banner.js"></script>
+  <script src="js/index-enhanced.js"></script>
+
+  <script>
+  fetch("navbar.html")
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById("navbar-container").innerHTML = html;
+      console.log("✅ Navbar insertado en DOM");
+
+      setTimeout(() => {
+        if (typeof verificarSesionUsuario === "function") {
+          verificarSesionUsuario();
+          console.log("✅ Sesión verificada");
+        }
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', cerrarSesion);
+          console.log("✅ Evento logout re-asignado");
+        }
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        
+        if (menuToggle && navLinks) {
+          menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            console.log("📱 Menú mobile toggled");
+          });
+          console.log("✅ Evento menú mobile asignado");
+        }
+
+        if (typeof actualizarBadgeCarrito === "function") {
+          actualizarBadgeCarrito();
+          console.log("✅ Badge del carrito actualizado después de cargar navbar en index");
+        }
+
+        console.log("✅ Navbar completamente configurado");
+      }, 100);
+    })
+    .catch(error => console.error("❌ Error al cargar navbar:", error));
+  </script>
+</body>
+</html>

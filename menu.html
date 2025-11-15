@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/notifications.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="img/logo.png" type="image/png">
+
+  <title>Raíces</title>
+  <meta name="description" content="Descubre nuestro exquisito menú de alta cocina peruana con entradas, almuerzos, postres y bebidas tradicionales.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:wght@200..700&display=swap" rel="stylesheet">
+ 
+<link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/menu-filters.css">
+  <link rel="stylesheet" href="css/menu-categories.css">
+  <link rel="stylesheet" href="css/modalmenu.css">
+  <link rel="stylesheet" href="css/auth-modal.css">
+  <link rel="stylesheet" href="css/promociones-banner.css">
+</head>
+<body>
+  <div id="navbar-container"></div>
+
+  <main class="main-container">
+    <!-- Contenido principal -->
+    <div class="menu-content-full">
+      
+      <!-- ✅ PRIMERO: Banner de Promociones -->
+<div class="promo-section">
+  <div class="promo-header">
+    <span class="promo-badge">🔥 OFERTAS ESPECIALES</span>
+    <h2 class="promo-title">Promociones del Día</h2>
+    <p class="promo-subtitle">¡Aprovecha nuestras mejores ofertas mientras duren!</p>
+  </div>
+  
+  <div class="promo-banner-container">
+    <div class="promo-slider" id="promoSlider">
+      <!-- Las promociones se insertarán aquí por JS -->
+    </div>
+  </div>
+</div>
+
+      <!-- ✅ SEGUNDO: Categorías -->
+<div class="categories-section">
+  <div class="categories-header">
+    <h2><span class="categories-icon"></span> Nuestro Menú</h2>
+    <p class="categories-subtitle">Explora nuestras deliciosas categorías</p>
+  </div>
+  
+  <div class="categories-container-full">
+    <button class="category-scroll-btn left" id="scrollLeft">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+    
+    <div class="categories-wrapper">
+      <div class="categories">
+        <!-- Las categorías se insertan aquí dinámicamente por main.js -->
+      </div>
+    </div>
+  </div>
+</div>
+
+      <!-- Barra de búsqueda debajo de categorías -->
+      <div class="top-search-bar">
+        <div class="search-filter">
+          <span class="search-icon"></span>
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Buscar platillo..."
+          >
+          <button class="clear-search" id="clearSearch">✕</button>
+        </div>
+      </div>
+
+      <!-- Contenedor con sidebar y productos -->
+      <div class="content-with-sidebar">
+        <!-- Sidebar de filtros -->
+        <aside class="filters-sidebar">
+          <div class="filters-header">
+            <h3>Filtros</h3>
+            <button class="btn-clear-filters" id="clearFilters">Limpiar</button>
+          </div>
+
+          <!-- Filtro de precio -->
+          <div class="filter-section">
+            <h4 class="filter-title">Rango de Precio</h4>
+            <div class="price-filter">
+              <div class="price-inputs">
+                <div class="price-input-group">
+                  <label>Mínimo</label>
+                  <div class="input-wrapper">
+                    <span class="currency">S/</span>
+                    <input type="number" id="minPrice" class="price-input" min="0" step="5" value="0">
+                  </div>
+                </div>
+                <div class="price-input-group">
+                  <label>Máximo</label>
+                  <div class="input-wrapper">
+                    <span class="currency">S/</span>
+                    <input type="number" id="maxPrice" class="price-input" min="0" step="5" value="100">
+                  </div>
+                </div>
+              </div>
+              <div class="price-range-slider">
+                <input type="range" id="priceRange" min="0" max="100" value="100" step="5">
+                <div class="range-labels">
+                  <span>S/ 0</span>
+                  <span id="maxPriceLabel">S/ 100</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filtros rápidos de precio -->
+          <div class="filter-section">
+            <h4 class="filter-title">Filtros Rápidos</h4>
+            <div class="quick-filters">
+              <button class="quick-filter-btn" data-range="0-20">Hasta S/ 20</button>
+              <button class="quick-filter-btn" data-range="20-40">S/ 20 - S/ 40</button>
+              <button class="quick-filter-btn" data-range="40-60">S/ 40 - S/ 60</button>
+              <button class="quick-filter-btn" data-range="60-100">S/ 60+</button>
+            </div>
+          </div>
+
+          <!-- Información -->
+          <div class="filter-info">
+            <div class="info-item">
+              <span class="info-icon">🍽️</span>
+              <div>
+                <strong id="totalProducts">0</strong>
+                <span>productos encontrados</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Grid de productos -->
+        <div class="menu-products-container">
+          <div id="menu-grid">
+            <!-- Spinner de carga inicial -->
+            <div class="loading-spinner" id="loading-spinner">
+              <div class="spinner"></div>
+              <p>Preparando su experiencia culinaria...</p>
+            </div>
+          </div>
+
+          <!-- Paginación -->
+          <div class="pagination-container" id="paginationContainer" style="display: none;">
+            <button class="pagination-btn" id="prevPage" disabled>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Anterior
+            </button>
+            <div class="pagination-pages" id="paginationPages">
+              <!-- Los números de página se generarán aquí -->
+            </div>
+            <button class="pagination-btn" id="nextPage">
+              Siguiente
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-text">© 2025 <strong>Raíces</strong> – Experiencia Gastronómica</p>
+        <div class="footer-links">
+          <a href="#menu">Menú</a>
+          <a href="registro.html">Registro</a>
+          <a href="login.html">Login</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/menu-filters.js"></script>
+  <script src="js/category-scroll.js"></script>
+  <script src="js/promociones-banner.js"></script>
+
+  <script>
+  fetch("navbar.html")
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById("navbar-container").innerHTML = html;
+      console.log("✅ Navbar insertado en DOM");
+
+      setTimeout(() => {
+        if (typeof verificarSesionUsuario === "function") {
+          verificarSesionUsuario();
+          console.log("✅ Sesión verificada");
+        }
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', cerrarSesion);
+          console.log("✅ Evento logout re-asignado");
+        }
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        
+        if (menuToggle && navLinks) {
+          menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            console.log("📱 Menú mobile toggled");
+          });
+          console.log("✅ Evento menú mobile asignado");
+        }
+
+        if (typeof actualizarBadgeCarrito === "function") {
+          actualizarBadgeCarrito();
+          console.log("✅ Badge del carrito actualizado después de cargar navbar");
+        }
+
+        console.log("✅ Navbar completamente configurado");
+      }, 100);
+    })
+    .catch(error => console.error("❌ Error al cargar navbar:", error));
+  </script>
+
+  <!-- Modal del Carrito -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-header">
+      <div>
+        <h2>Mi Carrito <span class="cart-count" id="cartCountModal">0</span></h2>
+      </div>
+      <button class="cart-close" id="cartClose">×</button>
+    </div>
+    
+    <div class="cart-content">
+      <div class="cart-empty" id="cartEmpty">
+        <div class="cart-empty-icon">🛒</div>
+        <p>Tu carrito está vacío</p>
+      </div>
+      
+      <div class="cart-items" id="cartItems" style="display: none;"></div>
+    </div>
+    
+    <div class="cart-footer" id="cartFooter" style="display: none;">
+      <div class="cart-summary">
+        <div class="cart-summary-row">
+          <span class="cart-summary-label">Subtotal:</span>
+          <span class="cart-summary-value">S/ <span id="cartSubtotal">0.00</span></span>
+        </div>
+      </div>
+      
+      <div class="cart-total">
+        <span class="cart-total-label">Total:</span>
+        <span class="cart-total-value">S/ <span id="cartTotal">0.00</span></span>
+      </div>
+      
+      <button class="cart-checkout-btn" id="cartCheckout">
+        Proceder al Pago
+      </button>
+      
+      <button class="cart-clear-btn" id="cartClear">
+        Vaciar Carrito
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de Autenticación -->
+  <div class="auth-modal-overlay" id="authModalOverlay">
+    <div class="auth-modal">
+      <button class="auth-modal-close" id="authModalClose">×</button>
+      <div class="auth-modal-content">
+        <h2 class="auth-modal-title">Inicia sesión para continuar</h2>
+        <p class="auth-modal-text">
+          Para agregar productos al carrito necesitas tener una cuenta
+        </p>
+        <div class="auth-modal-actions">
+          <a href="login.html" class="auth-modal-btn primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Iniciar sesión
+          </a>
+          <a href="registro.html" class="auth-modal-btn secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            Crear cuenta
+          </a>
+        </div>
+        <p class="auth-modal-footer">
+          ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/navbar.js"></script>
+</body>
+</html>
