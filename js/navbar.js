@@ -295,7 +295,7 @@ async function cargarNotificaciones() {
   try {
     console.log(`📡 Cargando notificaciones para cliente ${usuarioActual.id}...`);
     
-    const response = await fetch(`http://localhost:3000/api/notificaciones/${usuarioActual.id}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/notificaciones/${usuarioActual.id}`);
     
     if (!response.ok) throw new Error('Error al cargar notificaciones');
     
@@ -360,7 +360,7 @@ function actualizarBadgeNotificaciones(notificaciones) {
 
 async function marcarComoLeida(notificacionId) {
   try {
-    await fetch(`http://localhost:3000/api/notificaciones/${notificacionId}/leer`, {
+    await fetch(`https://raices-back.onrender.com/api/notificaciones/${notificacionId}/leer`, {
       method: 'PUT'
     });
     
@@ -376,7 +376,7 @@ async function marcarTodasComoLeidas() {
   if (!usuarioActual) return;
   
   try {
-    await fetch(`http://localhost:3000/api/notificaciones/${usuarioActual.id}/leer-todas`, {
+    await fetch(`https://raices-back.onrender.com/api/notificaciones/${usuarioActual.id}/leer-todas`, {
       method: 'PUT'
     });
     
@@ -426,7 +426,7 @@ async function limpiarSesion() {
   
   if (usuarioActual && usuarioActual.id) {
     try {
-      const API_CARRITO = "http://localhost:3000/api/carrito";
+      const API_CARRITO = "https://raices-back.onrender.com/api/carrito";
       await fetch(`${API_CARRITO}/cliente/${usuarioActual.id}`, {
         method: 'DELETE'
       });
@@ -523,7 +523,7 @@ async function cargarComprobanteEnDropdown(ordenId, numeroComprobante) {
   try {
     console.log("🔄 Cargando comprobante desde API:", ordenId);
     
-    const response = await fetch(`http://localhost:3000/api/checkout/orden/${ordenId}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/checkout/orden/${ordenId}`);
     
     if (!response.ok) {
       throw new Error('Error al cargar el comprobante');

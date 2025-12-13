@@ -1,6 +1,6 @@
 // js/login.js - ACTUALIZADO CON CARGA DE CARRITO
-const API_URL = "http://localhost:3000/api/auth";
-const API_CARRITO = "http://localhost:3000/api/carrito";
+const API_URL = "https://raices-back.onrender.com/api/auth";
+const API_CARRITO = "https://raices-back.onrender.com/api/carrito";
 
 const formLogin = document.getElementById("formLogin");
 const togglePassword = document.querySelector(".toggle-password");

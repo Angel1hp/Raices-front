@@ -1,6 +1,6 @@
 // js/index-enhanced.js - VERSIÓN CORREGIDA Y SIMPLIFICADA
 
-const API_URL = "http://localhost:3000/api/menu";
+const API_URL = "https://raices-back.onrender.com/api/menu";
 
 let comidas = [];
 let bebidas = [];

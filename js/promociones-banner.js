@@ -24,7 +24,7 @@ async function cargarPromociones() {
       intentos++;
     }
     
-    const response = await fetch("http://localhost:3000/api/menu/promociones");
+    const response = await fetch("https://raices-back.onrender.com/api/menu/promociones");
     const promos = await response.json();
     
     // ✅ GUARDAR EN CACHE
@@ -223,7 +223,7 @@ window.abrirModalPromocion = async function(promoId) {
   // Si no está en cache, buscar en el servidor
   if (!promo) {
     try {
-      const response = await fetch("http://localhost:3000/api/menu/promociones");
+      const response = await fetch("https://raices-back.onrender.com/api/menu/promociones");
       const promos = await response.json();
       promocionesCache = promos;
       promo = promos.find(p => p.id == promoId);
@@ -377,7 +377,7 @@ window.agregarPromocionDirecta = async function(event, promoId) {
   // Si no está en cache, buscar en el servidor
   if (!promo) {
     try {
-      const response = await fetch("http://localhost:3000/api/menu/promociones");
+      const response = await fetch("https://raices-back.onrender.com/api/menu/promociones");
       const promos = await response.json();
       promocionesCache = promos;
       promo = promos.find(p => p.id == promoId);
@@ -463,7 +463,7 @@ window.abrirModalPromocion = async function(promoId) {
   
   try {
     // Obtener datos de la promoción
-    const response = await fetch("http://localhost:3000/api/menu/promociones");
+    const response = await fetch("https://raices-back.onrender.com/api/menu/promociones");
     const promos = await response.json();
     const promo = promos.find(p => p.id == promoId);
     
@@ -524,7 +524,7 @@ window.agregarPromocionDirecta = async function(event, promoId) {
   
   try {
     // Obtener datos de la promoción
-    const response = await fetch("http://localhost:3000/api/menu/promociones");
+    const response = await fetch("https://raices-back.onrender.com/api/menu/promociones");
     const promos = await response.json();
     const promo = promos.find(p => p.id == promoId);
     

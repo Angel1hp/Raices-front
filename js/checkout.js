@@ -1,6 +1,6 @@
 // js/checkout.js - VERSIÓN CORREGIDA
 
-const API_CHECKOUT = "http://localhost:3000/api/checkout";
+const API_CHECKOUT = "https://raices-back.onrender.com/api/checkout";
 
 let checkoutState = {
   step: 1,
@@ -97,7 +97,7 @@ async function autocompletarDatosUsuario() {
   if (!usuarioActual || !usuarioActual.id) return;
   
   try {
-    const response = await fetch(`http://localhost:3000/api/auth/cliente/${usuarioActual.id}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/auth/cliente/${usuarioActual.id}`);
     
     if (!response.ok) {
       console.log("⚠️ No se pudieron obtener datos del usuario");

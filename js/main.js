@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:3000/api/menu";
-const API_CARRITO = "http://localhost:3000/api/carrito";
+const API_URL = "https://raices-back.onrender.com/api/menu";
+const API_CARRITO = "https://raices-back.onrender.com/api/carrito";
 
 const grid = document.getElementById("menu-grid");
 let comidas = [];

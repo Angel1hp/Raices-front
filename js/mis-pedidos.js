@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function cargarPedidos(clienteId) {
   try {
-    const response = await fetch(`http://localhost:3000/api/checkout/ordenes/${clienteId}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/checkout/ordenes/${clienteId}`);
     
     if (!response.ok) throw new Error('Error al cargar pedidos');
     
@@ -172,7 +172,7 @@ function configurarModal() {
 
 async function abrirDetallePedido(ordenId) {
   try {
-    const response = await fetch(`http://localhost:3000/api/checkout/orden/${ordenId}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/checkout/orden/${ordenId}`);
     
     if (!response.ok) throw new Error('Error al cargar detalle');
     

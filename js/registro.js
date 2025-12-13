@@ -1,5 +1,5 @@
 // js/registro.js - ACTUALIZADO
-const API_URL = "http://localhost:3000/api/auth";
+const API_URL = "https://raices-back.onrender.com/api/auth";
 
 const formRegistro = document.getElementById("formRegistro");
 

@@ -103,7 +103,7 @@ window.limpiarSesion = async function() {
   // Vaciar carrito en BD si hay usuario
   if (usuarioActual && usuarioActual.id) {
     try {
-      const API_CARRITO = "http://localhost:3000/api/carrito";
+      const API_CARRITO = "https://raices-back.onrender.com/api/carrito";
       await fetch(`${API_CARRITO}/cliente/${usuarioActual.id}`, {
         method: 'DELETE'
       });

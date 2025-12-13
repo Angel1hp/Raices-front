@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function cargarDatosFormulario() {
   try {
-    const response = await fetch('http://localhost:3000/api/auth/datos-formulario');
+    const response = await fetch('https://raices-back.onrender.com/api/auth/datos-formulario');
     
     if (!response.ok) throw new Error('Error al cargar datos del formulario');
     
@@ -52,7 +52,7 @@ async function cargarDatosCliente(clienteId) {
   try {
     console.log(`📡 Cargando datos del cliente ${clienteId}...`);
     
-    const response = await fetch(`http://localhost:3000/api/auth/cliente/${clienteId}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/auth/cliente/${clienteId}`);
     
     if (!response.ok) throw new Error('Error al cargar datos');
     
@@ -306,7 +306,7 @@ async function guardarDatosPersonales() {
   const telefono = document.getElementById('editTelefono').value;
   
   try {
-    const response = await fetch(`http://localhost:3000/api/auth/actualizar/${clienteData.id}`, {
+    const response = await fetch(`https://raices-back.onrender.com/api/auth/actualizar/${clienteData.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre, apellido, email, telefono })
@@ -343,7 +343,7 @@ async function guardarDireccion() {
   }
   
   try {
-    const response = await fetch(`http://localhost:3000/api/auth/actualizar/${clienteData.id}`, {
+    const response = await fetch(`https://raices-back.onrender.com/api/auth/actualizar/${clienteData.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ direccion, distrito_id })
@@ -387,7 +387,7 @@ async function guardarDatosFiscales() {
   }
   
   try {
-    const response = await fetch(`http://localhost:3000/api/auth/actualizar/${clienteData.id}`, {
+    const response = await fetch(`https://raices-back.onrender.com/api/auth/actualizar/${clienteData.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ruc: ruc || null })
@@ -428,7 +428,7 @@ async function cambiarContrasena() {
   }
   
   try {
-    const response = await fetch(`http://localhost:3000/api/auth/cambiar-contrasena/${clienteData.id}`, {
+    const response = await fetch(`https://raices-back.onrender.com/api/auth/cambiar-contrasena/${clienteData.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ currentPassword, newPassword })

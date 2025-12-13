@@ -1,7 +1,7 @@
 // js/index-cart.js - Sistema de carrito UNIFICADO con BD
 // ✅ VERSIÓN CORREGIDA - Funciones globales disponibles inmediatamente
 
-const API_CARRITO = "http://localhost:3000/api/carrito";
+const API_CARRITO = "https://raices-back.onrender.com/api/carrito";
 window.carrito = [];
 let carrito = window.carrito; // Alias local para compatibilidad
 let usuarioActual = null;
