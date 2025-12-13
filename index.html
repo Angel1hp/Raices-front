@@ -19,7 +19,8 @@
   <link rel="stylesheet" href="css/index-enhanced.css">
   <link rel="stylesheet" href="css/modalmenu.css">
   <link rel="stylesheet" href="css/auth-modal.css">
-  
+  <link rel="stylesheet" href="css/checkout.css">
+<link rel="stylesheet" href="css/cart.css">
 </head>
 <body>
   <div id="navbar-container"></div>
@@ -153,46 +154,349 @@
   </footer>
 
   <!-- MODAL DEL CARRITO -->
-  <div class="cart-overlay" id="cartOverlay"></div>
-  <div class="cart-modal" id="cartModal">
-    <div class="cart-header">
-      <div>
-        <h2>Mi Carrito <span class="cart-count" id="cartCountModal">0</span></h2>
-      </div>
-      <button class="cart-close" id="cartClose">×</button>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-modal" id="cartModal">
+  <div class="cart-header">
+    <div>
+      <h2>Mi Carrito <span class="cart-count" id="cartCountModal">0</span></h2>
+    </div>
+    <button class="cart-close" id="cartClose">×</button>
+  </div>
+  
+  <div class="cart-content">
+    <div class="cart-empty" id="cartEmpty">
+      <div class="cart-empty-icon">🛒</div>
+      <p>Tu carrito está vacío</p>
     </div>
     
-    <div class="cart-content">
-      <div class="cart-empty" id="cartEmpty">
-        <div class="cart-empty-icon">🛒</div>
-        <p>Tu carrito está vacío</p>
+    <div class="cart-items" id="cartItems" style="display: none;"></div>
+  </div>
+  
+  <div class="cart-footer" id="cartFooter" style="display: none;">
+    <div class="cart-summary">
+      <div class="cart-summary-row">
+        <span class="cart-summary-label">Subtotal:</span>
+        <span class="cart-summary-value">S/ <span id="cartSubtotal">0.00</span></span>
+      </div>
+    </div>
+    
+    <div class="cart-total">
+      <span class="cart-total-label">Total:</span>
+      <span class="cart-total-value">S/ <span id="cartTotal">0.00</span></span>
+    </div>
+    
+    <button class="cart-checkout-btn" id="cartCheckout">
+      Proceder al Pago
+    </button>
+    
+    <button class="cart-clear-btn" id="cartClear">
+      Vaciar Carrito
+    </button>
+  </div>
+
+  <!-- ✅ AGREGAR CHECKOUT CONTAINER -->
+  <!-- CHECKOUT CONTAINER -->
+<div class="checkout-container" id="checkoutContainer">
+  
+  <!-- Header -->
+  <div class="checkout-header">
+    <button class="checkout-back-btn" onclick="volverAlCarrito()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 4L6 10L12 16"/>
+      </svg>
+    </button>
+    <h2 class="checkout-title">Finalizar Compra</h2>
+  </div>
+
+  <!-- Indicadores de pasos -->
+  <div class="checkout-steps">
+    <div class="checkout-step active">
+      <div class="step-number">1</div>
+      <div class="step-label">Entrega</div>
+    </div>
+    <div class="checkout-step">
+      <div class="step-number">2</div>
+      <div class="step-label">Pago</div>
+    </div>
+    <div class="checkout-step">
+      <div class="step-number">3</div>
+      <div class="step-label">Confirmar</div>
+    </div>
+  </div>
+
+  <!-- Resumen del pedido -->
+  <div class="checkout-summary">
+    <h3>📦 Resumen del Pedido</h3>
+    <div id="checkoutSummaryItems">
+      <!-- Se llenará dinámicamente -->
+    </div>
+    <div class="summary-total">
+      <span class="summary-total-label">Total:</span>
+      <span class="summary-total-value" id="checkoutSummaryTotal">S/ 0.00</span>
+    </div>
+  </div>
+
+  <!-- PASO 1: ENTREGA -->
+  <div class="checkout-step-content" style="display: block;">
+  <div class="delivery-section">
+    <h3>🚚 Datos de Entrega</h3>
+    
+    <!-- ✅ Sin opciones, directamente los campos -->
+    <div class="delivery-details active" id="deliveryDetails">
+      <div class="form-group">
+        <label>Dirección de entrega *</label>
+        <input type="text" id="deliveryAddress" placeholder="Calle, número, distrito">
       </div>
       
-      <div class="cart-items" id="cartItems" style="display: none;"></div>
+      <div class="form-group">
+        <label>Referencia</label>
+        <textarea id="deliveryReference" placeholder="Cerca de..., color de casa, etc."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>Hora de entrega *</label>
+        <select id="deliveryTime">
+          <option value="">Selecciona una hora</option>
+          <option value="12:00">12:00 PM</option>
+          <option value="12:30">12:30 PM</option>
+          <option value="13:00">1:00 PM</option>
+          <option value="13:30">1:30 PM</option>
+          <option value="14:00">2:00 PM</option>
+          <option value="14:30">2:30 PM</option>
+          <option value="19:00">7:00 PM</option>
+          <option value="19:30">7:30 PM</option>
+          <option value="20:00">8:00 PM</option>
+          <option value="20:30">8:30 PM</option>
+          <option value="21:00">9:00 PM</option>
+        </select>
+      </div>
     </div>
-    
-    <div class="cart-footer" id="cartFooter" style="display: none;">
-      <div class="cart-summary">
-        <div class="cart-summary-row">
-          <span class="cart-summary-label">Subtotal:</span>
-          <span class="cart-summary-value">S/ <span id="cartSubtotal">0.00</span></span>
+  </div>
+
+  <div class="checkout-actions">
+    <button class="checkout-btn checkout-btn-primary" onclick="continuarAPago()">
+      Continuar
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M7 4L13 10L7 16"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+  <!-- PASO 2: PAGO -->
+  <div class="checkout-step-content" style="display: none;">
+    <div class="payment-section">
+      <h3>💳 Método de Pago</h3>
+      
+      <div class="payment-methods">
+        <div class="payment-method" onclick="seleccionarMetodoPago('tarjeta')">
+          <div class="payment-method-icon">💳</div>
+          <div class="payment-method-name">Tarjeta</div>
+        </div>
+        
+        <div class="payment-method" onclick="seleccionarMetodoPago('yape')">
+          <div class="payment-method-icon">📱</div>
+          <div class="payment-method-name">Yape</div>
+        </div>
+        
+        <div class="payment-method" onclick="seleccionarMetodoPago('plin')">
+          <div class="payment-method-icon">💰</div>
+          <div class="payment-method-name">Plin</div>
         </div>
       </div>
-      
-      <div class="cart-total">
-        <span class="cart-total-label">Total:</span>
-        <span class="cart-total-value">S/ <span id="cartTotal">0.00</span></span>
+
+      <!-- Formulario de Tarjeta -->
+      <div class="payment-form" id="tarjetaForm">
+        <div class="card-preview">
+          <div class="card-number-display" id="cardNumberDisplay">•••• •••• •••• ••••</div>
+          <div class="card-info">
+            <div class="card-holder" id="cardHolderDisplay">NOMBRE DEL TITULAR</div>
+            <div class="card-expiry" id="cardExpiryDisplay">MM/AA</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Número de tarjeta</label>
+          <input 
+            type="text" 
+            id="cardNumber" 
+            placeholder="1234 5678 9012 3456" 
+            maxlength="19"
+            oninput="formatearNumeroTarjeta(this)"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del titular</label>
+          <input 
+            type="text" 
+            id="cardHolder" 
+            placeholder="NOMBRE COMPLETO"
+            oninput="actualizarPreviewTarjeta()"
+          >
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>Fecha de expiración</label>
+            <input 
+              type="text" 
+              id="cardExpiry" 
+              placeholder="MM/AA"
+              maxlength="5"
+              oninput="formatearExpiracion(this)"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>CVV</label>
+            <input 
+              type="text" 
+              id="cardCVV" 
+              placeholder="123"
+              maxlength="3"
+            >
+          </div>
+        </div>
       </div>
-      
-      <button class="cart-checkout-btn" id="cartCheckout">
-        Proceder al Pago
+
+      <!-- Formulario de Yape -->
+      <div class="payment-form" id="yapeForm">
+        <div class="qr-container">
+          <div class="qr-code">📱</div>
+          <p class="qr-instructions">
+            Escanea el código QR o envía al número:
+          </p>
+          <div class="qr-phone">
+            📞 999 888 777
+          </div>
+          <p class="qr-instructions" style="margin-top: 12px; font-size: 12px;">
+            Monto a pagar: <strong id="yapeAmount">S/ 0.00</strong>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label>Número de operación *</label>
+          <input 
+            type="text" 
+            id="yapeOperacion" 
+            placeholder="Ej: AB123456"
+            maxlength="8"
+            oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '').substring(0, 8)"
+          >
+          <small style="color: #6b7280; font-size: 12px; margin-top: 4px; display: block;">
+            Máximo 8 caracteres (letras y números)
+          </small>
+        </div>
+      </div>
+
+      <!-- Formulario de Plin -->
+      <div class="payment-form" id="plinForm">
+        <div class="qr-container">
+          <div class="qr-code">💰</div>
+          <p class="qr-instructions">
+            Escanea el código QR o envía al número:
+          </p>
+          <div class="qr-phone">
+            📞 987 654 321
+          </div>
+          <p class="qr-instructions" style="margin-top: 12px; font-size: 12px;">
+            Monto a pagar: <strong id="plinAmount">S/ 0.00</strong>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label>Número de operación *</label>
+          <input 
+            type="text" 
+            id="plinOperacion" 
+            placeholder="Ej: PL456789"
+            maxlength="8"
+            oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '').substring(0, 8)"
+          >
+          <small style="color: #6b7280; font-size: 12px; margin-top: 4px; display: block;">
+            Máximo 8 caracteres (letras y números)
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-actions">
+      <button class="checkout-btn checkout-btn-secondary" onclick="mostrarPaso(1)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 4L6 10L12 16"/>
+        </svg>
+        Volver
       </button>
-      
-      <button class="cart-clear-btn" id="cartClear">
-        Vaciar Carrito
+      <button class="checkout-btn checkout-btn-primary" onclick="continuarAComprobante()">
+        Continuar
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 4L13 10L7 16"/>
+        </svg>
       </button>
     </div>
   </div>
+
+  <!-- PASO 3: COMPROBANTE -->
+  <div class="checkout-step-content" style="display: none;">
+    <div class="comprobante-section">
+      <h3>📄 Tipo de Comprobante</h3>
+      
+      <div class="comprobante-options">
+        <div class="comprobante-option active" onclick="seleccionarComprobante('boleta')">
+          Boleta
+        </div>
+        <div class="comprobante-option" onclick="seleccionarComprobante('factura')">
+          Factura
+        </div>
+      </div>
+
+      <div class="ruc-input" id="rucInput">
+        <div class="form-group">
+          <label>RUC *</label>
+          <input 
+            type="text" 
+            id="rucNumber" 
+            placeholder="Ingresa tu RUC (11 dígitos)"
+            maxlength="11"
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-actions">
+      <button class="checkout-btn checkout-btn-secondary" onclick="mostrarPaso(2)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 4L6 10L12 16"/>
+        </svg>
+        Volver
+      </button>
+      <button class="checkout-btn checkout-btn-primary" onclick="finalizarCompra()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+        Finalizar Compra
+      </button>
+    </div>
+  </div>
+
+  <!-- MENSAJE DE ÉXITO -->
+  <div class="checkout-success" id="checkoutSuccess">
+    <div class="success-icon">✓</div>
+    <h3 class="success-title">¡Compra Exitosa!</h3>
+    <p class="success-message">
+      Tu pedido ha sido procesado correctamente.<br>
+      Recibirás un correo de confirmación en breve.
+    </p>
+    <div class="order-number">Orden #0000</div>
+    <button class="checkout-btn checkout-btn-primary" onclick="cerrarCheckoutExitoso()">
+      Volver al Inicio
+    </button>
+  </div>
+
+</div>
+<!-- FIN CHECKOUT CONTAINER -->
+</div>
 
   <!-- MODAL DE AUTENTICACIÓN -->
   <div class="auth-modal-overlay" id="authModalOverlay">
@@ -230,10 +534,7 @@
     </div>
   </div>
 
-  <script src="js/index-cart.js"></script>
-  <script src="js/navbar.js"></script>
-  <script src="js/banner.js"></script>
-  <script src="js/index-enhanced.js"></script>
+  
 
   <script>
   fetch("navbar.html")
@@ -275,5 +576,12 @@
     })
     .catch(error => console.error("❌ Error al cargar navbar:", error));
   </script>
+
+  <script src="js/index-cart.js"></script>
+<script src="js/navbar.js"></script>
+  <script src="js/banner.js"></script>
+      <script src="js/index-enhanced.js"></script>
+<script src="js/init-checkout.js"></script>
+<script src="js/checkout.js"></script>
 </body>
 </html>

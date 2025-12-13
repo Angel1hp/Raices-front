@@ -1,4 +1,4 @@
-// js/registro.js
+// js/registro.js - ACTUALIZADO
 const API_URL = "http://localhost:3000/api/auth";
 
 const formRegistro = document.getElementById("formRegistro");
@@ -320,3 +320,5 @@ document.getElementById("telefono").addEventListener("input", (e) => {
 document.getElementById("ruc").addEventListener("input", (e) => {
   e.target.value = e.target.value.replace(/[^0-9]/g, "").slice(0, 11);
 });
+
+console.log("✅ registro.js cargado");

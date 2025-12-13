@@ -1,5 +1,6 @@
-// js/login.js
+// js/login.js - ACTUALIZADO CON CARGA DE CARRITO
 const API_URL = "http://localhost:3000/api/auth";
+const API_CARRITO = "http://localhost:3000/api/carrito";
 
 const formLogin = document.getElementById("formLogin");
 const togglePassword = document.querySelector(".toggle-password");
@@ -51,6 +52,7 @@ formLogin.addEventListener("submit", async (e) => {
       const datosUsuario = {
         id: data.cliente.id,
         nombre: data.cliente.nombre,
+        apellido: data.cliente.apellido,
         usuario: data.cliente.usuario,
         email: data.cliente.email,
         token: data.token
@@ -62,6 +64,11 @@ formLogin.addEventListener("submit", async (e) => {
       } else {
         sessionStorage.setItem("usuario", JSON.stringify(datosUsuario));
       }
+
+      console.log("✅ Usuario guardado:", datosUsuario);
+
+      // ✅ CARGAR CARRITO DESDE LA BD
+      await cargarCarritoAlIniciarSesion(datosUsuario.id);
 
       mostrarNotificacion("¡Inicio de sesión exitoso! 🎉", "success");
 
@@ -90,6 +97,30 @@ formLogin.addEventListener("submit", async (e) => {
   }
 });
 
+// ✅ FUNCIÓN PARA CARGAR EL CARRITO AL INICIAR SESIÓN
+async function cargarCarritoAlIniciarSesion(clienteId) {
+  try {
+    console.log("📦 Cargando carrito del usuario:", clienteId);
+    
+    const response = await fetch(`${API_CARRITO}/${clienteId}`);
+    
+    if (response.ok) {
+      const carrito = await response.json();
+      console.log(`✅ Carrito cargado: ${carrito.length} items`);
+      
+      // Actualizar badge si la función existe
+      if (typeof actualizarBadgeCarrito === 'function') {
+        actualizarBadgeCarrito();
+      }
+    } else {
+      console.log("ℹ️ No hay carrito previo o está vacío");
+    }
+  } catch (error) {
+    console.error("❌ Error al cargar carrito:", error);
+    // No mostramos error al usuario porque no es crítico
+  }
+}
+
 // Función para mostrar notificaciones
 function mostrarNotificacion(mensaje, tipo = "info") {
   const notif = document.createElement("div");
@@ -102,3 +133,5 @@ function mostrarNotificacion(mensaje, tipo = "info") {
     setTimeout(() => notif.remove(), 300);
   }, 3000);
 }
+
+console.log("✅ login.js cargado con soporte para carrito en BD");

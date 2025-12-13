@@ -5,12 +5,12 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: "Belleza", sans-serif;
 }
 
 .navbar {
-  background: rgb(169, 35, 35);
-  padding: 1px 20px;
+  background: #fffefe;
+  padding: 5px 20px;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
   position: sticky;
   top: 12px;
@@ -478,5 +478,764 @@ body {
   
   .brand {
     padding: 5px 10px;
+  }
+}
+/* =====================
+   NOTIFICACIONES
+===================== */
+.notifications-container {
+  position: relative;
+}
+
+.notifications-btn {
+  position: relative;
+  background: white;
+  border: 2px solid #b09124;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.notifications-btn:hover {
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+}
+
+.notifications-btn svg {
+  color: #333;
+}
+
+.notifications-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #e63946;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  animation: pulse 0.3s ease;
+}
+
+.notifications-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 360px;
+  max-height: 500px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+  border: 2px solid #FFD700;
+}
+
+.notifications-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.notifications-header {
+  padding: 16px 20px;
+  border-bottom: 2px solid #FFD700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%);
+}
+
+.notifications-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.mark-all-read {
+  background: none;
+  border: none;
+  color: #c8102e;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+
+.mark-all-read:hover {
+  background: rgba(200, 16, 46, 0.1);
+}
+
+.notifications-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  gap: 12px;
+}
+
+.notification-item:hover {
+  background: #fafafa;
+}
+
+.notification-item.unread {
+  background: #fff8f0;
+  border-left: 3px solid #FFD700;
+}
+
+.notification-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.notification-icon.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.notification-icon.info {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.notification-message {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.notification-time {
+  font-size: 11px;
+  color: #999;
+  font-weight: 600;
+}
+
+.notifications-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #999;
+}
+
+.notifications-empty svg {
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.notifications-empty p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* =====================
+   USER MENU DROPDOWN
+===================== */
+.user-menu-container {
+  position: relative;
+}
+
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border: 2px solid #FFD700;
+  cursor: pointer;
+  padding: 6px 14px 6px 6px;
+  border-radius: 25px;
+  transition: all 0.3s;
+}
+
+.user-menu-btn:hover {
+  background: #ebebeb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.user-menu-btn .user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFD700, #FFC700);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(255, 215, 0, 0.4);
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+
+.user-menu-btn.active .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+  border: 2px solid #FFD700;
+}
+
+.user-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.user-dropdown-header {
+  padding: 20px;
+  background: linear-gradient(135deg, #c8102e 0%, #8b0a1f 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.user-dropdown-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.user-dropdown-info strong {
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown-info span {
+  font-size: 12px;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown-divider {
+  height: 1px;
+  background: #eee;
+  margin: 8px 0;
+}
+
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.user-dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.user-dropdown-item svg {
+  flex-shrink: 0;
+}
+
+.logout-item {
+  color: #e63946;
+}
+
+.logout-item:hover {
+  background: #fff5f5;
+}
+
+/* =====================
+   RESPONSIVE - DROPDOWNS
+===================== */
+@media (max-width: 968px) {
+  .user-name {
+    display: none;
+  }
+  
+  .user-menu-btn {
+    padding: 6px;
+  }
+  
+  .notifications-dropdown,
+  .user-dropdown {
+    width: 320px;
+    right: -10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .notifications-dropdown,
+  .user-dropdown {
+    width: calc(100vw - 40px);
+    right: -80px;
+  }
+  
+  .notifications-btn,
+  .user-menu-btn .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-dropdown,
+  .user-dropdown {
+    width: calc(100vw - 20px);
+    right: -100px;
+  }
+}
+/* Agregar al final de navbar.css */
+
+/* =====================
+   BOTÓN DE COMPROBANTE EN NOTIFICACIONES
+===================== */
+.notification-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.notification-btn-comprobante {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #af6d6d 0%, #8b5555 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.notification-btn-comprobante:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(175, 109, 109, 0.4);
+  background: linear-gradient(135deg, #8b5555 0%, #6d4343 100%);
+}
+
+.notification-btn-comprobante svg {
+  flex-shrink: 0;
+}
+
+.notification-mark-read {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  opacity: 0;
+  z-index: 10;
+}
+
+.notification-item:hover .notification-mark-read {
+  opacity: 1;
+}
+
+.notification-mark-read:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.notification-item {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  padding-right: 48px;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notification-item:hover {
+  background: #f9fafb;
+}
+
+.notification-item.unread {
+  background: #fffbf0;
+  border-left: 3px solid #FFD700;
+}
+
+.notification-item.unread:hover {
+  background: #fff8e6;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* =====================
+   VISTAS DEL DROPDOWN (LISTA Y COMPROBANTE)
+===================== */
+.notifications-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Botón de volver */
+.notifications-back-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.notifications-back-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: translateX(-2px);
+}
+
+/* Botón de descargar */
+.notifications-download-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(175, 109, 109, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #af6d6d;
+}
+
+.notifications-download-btn:hover {
+  background: rgba(175, 109, 109, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Contenido del comprobante */
+.notifications-comprobante-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f9fafb;
+}
+
+/* Comprobante mini (versión compacta para dropdown) */
+.comprobante-mini {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+}
+
+.comprobante-mini .comprobante-header {
+  text-align: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #d1d5db;
+}
+
+.comprobante-mini .comprobante-empresa {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.comprobante-mini .comprobante-ruc {
+  font-size: 10px;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.comprobante-mini .comprobante-direccion {
+  font-size: 9px;
+  color: #6b7280;
+  line-height: 1.3;
+}
+
+.comprobante-mini .comprobante-tipo {
+  text-align: center;
+  margin: 12px 0;
+  padding: 10px;
+  background: #f3f4f6;
+  border-radius: 6px;
+}
+
+.comprobante-mini .comprobante-tipo-titulo {
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #af6d6d;
+}
+
+.comprobante-mini .comprobante-tipo-numero {
+  font-size: 11px;
+  color: #374151;
+  margin-top: 4px;
+}
+
+.comprobante-mini .comprobante-info {
+  margin: 12px 0;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.comprobante-mini .comprobante-info-row {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.comprobante-mini .comprobante-info-label {
+  font-weight: bold;
+  min-width: 100px;
+  color: #374151;
+}
+
+.comprobante-mini .comprobante-info-value {
+  color: #6b7280;
+}
+
+.comprobante-mini .comprobante-cliente {
+  margin: 12px 0;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 6px;
+  font-size: 10px;
+}
+
+.comprobante-mini .comprobante-cliente-titulo {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #1f2937;
+}
+
+.comprobante-mini .comprobante-items {
+  margin: 12px 0;
+  border-top: 1px dashed #d1d5db;
+  border-bottom: 1px dashed #d1d5db;
+  padding: 12px 0;
+}
+
+.comprobante-mini .comprobante-items-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 6px;
+  font-weight: bold;
+  font-size: 9px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e5e7eb;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.comprobante-mini .comprobante-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 6px;
+  font-size: 10px;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.comprobante-mini .comprobante-item-nombre {
+  font-weight: 600;
+}
+
+.comprobante-mini .comprobante-item-cant,
+.comprobante-mini .comprobante-item-total {
+  text-align: right;
+}
+
+.comprobante-mini .comprobante-totales {
+  margin-top: 12px;
+  font-size: 11px;
+}
+
+.comprobante-mini .comprobante-total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  padding: 3px 0;
+}
+
+.comprobante-mini .comprobante-total-row.final {
+  font-size: 13px;
+  font-weight: bold;
+  padding-top: 8px;
+  border-top: 2px solid #374151;
+  margin-top: 8px;
+  color: #af6d6d;
+}
+
+.comprobante-mini .comprobante-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed #d1d5db;
+  text-align: center;
+  font-size: 9px;
+  color: #6b7280;
+}
+
+.comprobante-mini .comprobante-qr {
+  margin: 12px auto;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 6px;
+  font-size: 50px;
+}
+
+.comprobante-mini .comprobante-mensaje {
+  font-style: italic;
+  margin-top: 8px;
+  line-height: 1.3;
+}
+
+/* =====================
+   RESPONSIVE - NOTIFICACIONES
+===================== */
+@media (max-width: 640px) {
+  .notification-btn-comprobante {
+    font-size: 10px;
+    padding: 5px 10px;
+    gap: 4px;
+  }
+  
+  .notification-btn-comprobante svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .notification-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .comprobante-mini {
+    padding: 16px;
+    font-size: 10px;
   }
 }

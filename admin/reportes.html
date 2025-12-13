@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estadísticas - Panel Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+          <span>Raíces Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Principal</div>
+          <a href="dashboard.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Gestión</div>
+          <a href="ordenes.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            <span>Órdenes</span>
+            <span class="badge" id="ordenesPendientes">0</span>
+          </a>
+          <a href="productos.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+            </svg>
+            <span>Productos</span>
+          </a>
+          <a href="empleados.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span>Empleados</span>
+          </a>
+          <a href="clientes.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <polyline points="17 11 19 13 23 9"/>
+            </svg>
+            <span>Clientes</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Reportes</div>
+          <a href="reportes.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="20" x2="12" y2="10"/>
+              <line x1="18" y1="20" x2="18" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="16"/>
+            </svg>
+            <span>Estadísticas</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <div class="user-details">
+            <div class="user-name" id="userName">Admin</div>
+            <div class="user-role" id="userRole">Administrador</div>
+          </div>
+          <button class="btn-logout" onclick="cerrarSesion()" title="Cerrar sesión">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="topbar">
+        <div class="topbar-left">
+          <h1>📊 Estadísticas y Reportes</h1>
+        </div>
+        <div class="topbar-right">
+          <select id="periodoReporte" class="btn btn-secondary" onchange="cargarEstadisticas()">
+            <option value="hoy">Hoy</option>
+            <option value="semana">Esta semana</option>
+            <option value="mes" selected>Este mes</option>
+            <option value="año">Este año</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- Resumen general -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #e6f7ff;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1890ff" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Total Órdenes</div>
+              <div class="stat-value" id="totalOrdenes">-</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #f0f9ff;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Ingresos Totales</div>
+              <div class="stat-value" id="ingresosTotales">S/. 0.00</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #fff7ed;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Ticket Promedio</div>
+              <div class="stat-value" id="ticketPromedio">S/. 0.00</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #fef2f2;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Clientes Activos</div>
+              <div class="stat-value" id="clientesActivos">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Productos más vendidos -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <h2 style="margin: 0; font-size: 18px;">🏆 Productos Más Vendidos</h2>
+          </div>
+          <div class="card-body">
+            <div id="productosPopulares" style="display: grid; gap: 12px;">
+              <div style="text-align: center; padding: 40px; color: #999;">
+                Cargando datos...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfica de ventas por categoría -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <h2 style="margin: 0; font-size: 18px;">📈 Ventas por Categoría</h2>
+          </div>
+          <div class="card-body">
+            <div id="ventasPorCategoria" style="display: grid; gap: 12px;">
+              <div style="text-align: center; padding: 40px; color: #999;">
+                Cargando datos...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horarios pico -->
+        <div class="card">
+          <div class="card-header">
+            <h2 style="margin: 0; font-size: 18px;">⏰ Horarios Pico</h2>
+          </div>
+          <div class="card-body">
+            <div id="horariosPico" style="display: grid; gap: 12px;">
+              <div style="text-align: center; padding: 40px; color: #999;">
+                Cargando datos...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Notificaciones -->
+  <div id="notification-container"></div>
+
+  <style>
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .stat-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .stat-content {
+      flex: 1;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #718096;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2d3748;
+    }
+
+    .producto-popular {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      background: #f7fafc;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .producto-popular:hover {
+      background: #edf2f7;
+    }
+
+    .producto-rank {
+      font-size: 20px;
+      font-weight: 700;
+      color: #af6d6d;
+      width: 32px;
+      text-align: center;
+    }
+
+    .producto-info {
+      flex: 1;
+    }
+
+    .producto-nombre {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+
+    .producto-stats {
+      font-size: 13px;
+      color: #718096;
+    }
+
+    .categoria-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #f7fafc;
+      border-radius: 8px;
+    }
+
+    .categoria-nombre {
+      width: 150px;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .categoria-progress {
+      flex: 1;
+      height: 32px;
+      background: #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .categoria-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #af6d6d, #d4a574);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      transition: width 0.5s ease;
+    }
+
+    .categoria-monto {
+      min-width: 100px;
+      text-align: right;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .horario-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      background: #f7fafc;
+      border-radius: 8px;
+    }
+
+    .horario-hora {
+      font-weight: 700;
+      color: #af6d6d;
+      min-width: 100px;
+    }
+
+    .horario-bar {
+      flex: 1;
+      height: 24px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .horario-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #48bb78, #38a169);
+      transition: width 0.5s ease;
+    }
+
+    .horario-cantidad {
+      min-width: 80px;
+      text-align: right;
+      font-weight: 600;
+      color: #2d3748;
+    }
+  </style>
+
+  <script src="js/admin-main.js"></script>
+  <script src="js/admin-auth.js"></script>
+  <script src="js/reportes.js"></script>
+</body>
+</html>
+
+

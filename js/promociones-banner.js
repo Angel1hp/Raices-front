@@ -1,319 +1,580 @@
 // ===============================================
-// BANNER DE PROMOCIONES - DISEÑO RÚSTICO + NEÓN
+// PROMOCIONES ESTÁTICAS - DISEÑO MODERNO
 // ===============================================
 
+// ✅ CACHE DE PROMOCIONES PARA EVITAR PETICIONES REPETIDAS
+let promocionesCache = [];
+
 async function cargarPromociones() {
-  const slider = document.getElementById("promoSlider");
-  
-  if (!slider) return;
-  
-  // ✅ MOSTRAR SKELETON LOADER INMEDIATAMENTE
-  slider.innerHTML = `
-    <div class="promo-banner-slide skeleton-loading">
-      <div class="skeleton-image"></div>
-      <div class="promo-banner-content">
-        <div class="skeleton-title"></div>
-        <div class="skeleton-text"></div>
-        <div class="skeleton-price"></div>
-      </div>
-    </div>
-    <div class="promo-banner-slide skeleton-loading">
-      <div class="skeleton-image"></div>
-      <div class="promo-banner-content">
-        <div class="skeleton-title"></div>
-        <div class="skeleton-text"></div>
-        <div class="skeleton-price"></div>
-      </div>
-    </div>
-    <div class="promo-banner-slide skeleton-loading">
-      <div class="skeleton-image"></div>
-      <div class="promo-banner-content">
-        <div class="skeleton-title"></div>
-        <div class="skeleton-text"></div>
-        <div class="skeleton-price"></div>
-      </div>
-    </div>
-  `;
-  
   try {
+    console.log("📦 Cargando promociones...");
+    
+    // ✅ Esperar a que las funciones globales estén disponibles
+    let intentos = 0;
+    const maxIntentos = 50;
+    
+    while (intentos < maxIntentos) {
+      if (typeof window.agregarAlCarrito === 'function' && 
+          typeof window.verificarSesion === 'function' &&
+          typeof window.abrirModalProducto === 'function') {
+        console.log("✅ Funciones del carrito y modal disponibles");
+        break;
+      }
+      await new Promise(resolve => setTimeout(resolve, 100));
+      intentos++;
+    }
+    
     const response = await fetch("http://localhost:3000/api/menu/promociones");
     const promos = await response.json();
+    
+    // ✅ GUARDAR EN CACHE
+    promocionesCache = promos;
+
+    const grid = document.getElementById("promoGrid");
+
+    if (!grid) {
+      console.error("❌ No se encontró el contenedor de promociones");
+      return;
+    }
+
+    // Mostrar skeletons mientras carga
+    grid.innerHTML = crearSkeletons(3);
 
     // Si no hay promociones
     if (promos.length === 0) {
-      slider.innerHTML = `
-        <div class="promo-banner-slide">
-          <div class="promo-banner-content">
-            <h3 class="promo-banner-title">Sin promociones</h3>
-            <p class="promo-banner-desc">No hay ofertas disponibles</p>
-          </div>
+      grid.innerHTML = `
+        <div class="promo-empty">
+          <div class="promo-empty-icon">🎉</div>
+          <p class="promo-empty-text">No hay promociones disponibles en este momento</p>
         </div>
       `;
       return;
     }
 
-    // ✅ DUPLICAR PROMOCIONES SUFICIENTES VECES PARA SCROLL INFINITO
-    // Duplicamos 4 veces para tener suficiente contenido
-    let promosRepetidas = [];
-    for (let i = 0; i < 4; i++) {
-      promosRepetidas = promosRepetidas.concat(promos);
-    }
-    
-    console.log(`🔄 Promociones originales: ${promos.length}`);
-    console.log(`🔄 Total de tarjetas: ${promosRepetidas.length}`);
-
-    // Construir HTML de todas las tarjetas
-    const tarjetasHTML = promosRepetidas.map((promo, index) => crearPromoCard(promo, index)).join("");
-    
-    // ✅ DUPLICAR EL CONTENIDO COMPLETO PARA SCROLL INFINITO SIN CORTES
-    slider.innerHTML = tarjetasHTML + tarjetasHTML;
-    
-    // ✅ Configurar eventos después de renderizar
-    configurarEventosPromociones(promosRepetidas);
-    
-    // ✅ INICIAR ANIMACIÓN INFINITA
-    iniciarScrollInfinito(slider);
-    
-    console.log(`✅ Banner de promociones configurado con scroll infinito`);
+    // Renderizar promociones después de un breve delay (para ver el skeleton)
+    setTimeout(() => {
+      const promosHTML = promos.map(promo => crearPromoCard(promo)).join("");
+      grid.innerHTML = promosHTML;
+      
+      // Agregar animación de entrada
+      const cards = grid.querySelectorAll('.promo-card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          card.style.transition = 'all 0.5s ease';
+          
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, 50);
+        }, index * 100);
+      });
+      
+      console.log(`✅ ${promos.length} promociones cargadas`);
+    }, 500);
 
   } catch (error) {
     console.error("❌ Error al cargar promociones:", error);
-    slider.innerHTML = `
-      <div class="promo-banner-slide">
-        <div class="promo-banner-content">
-          <h3 class="promo-banner-title">Error</h3>
-          <p class="promo-banner-desc">No se pudieron cargar las promociones</p>
+    
+    const grid = document.getElementById("promoGrid");
+    if (grid) {
+      grid.innerHTML = `
+        <div class="promo-empty">
+          <div class="promo-empty-icon">⚠️</div>
+          <p class="promo-empty-text">Error al cargar promociones. Intenta recargar la página.</p>
         </div>
-      </div>
-    `;
+      `;
+    }
   }
 }
 
-// ✅ FUNCIÓN PARA SCROLL INFINITO SUAVE
-function iniciarScrollInfinito(slider) {
-  // Detener cualquier animación CSS
-  slider.style.animation = 'none';
-  
-  let scrollPosition = 0;
-  const velocidad = 0.5; // píxeles por frame (ajustable)
-  
-  function animar() {
-    scrollPosition += velocidad;
-    
-    // Obtener el ancho de la primera mitad del contenido
-    const anchoContenido = slider.scrollWidth / 2;
-    
-    // Cuando llegamos a la mitad, reiniciamos sin que se note
-    if (scrollPosition >= anchoContenido) {
-      scrollPosition = 0;
-    }
-    
-    // Aplicar la transformación
-    slider.style.transform = `translateX(-${scrollPosition}px)`;
-    
-    requestAnimationFrame(animar);
-  }
-  
-  // Iniciar la animación
-  requestAnimationFrame(animar);
-  
-  // Pausar al hacer hover
-  slider.addEventListener('mouseenter', () => {
-    slider.style.animationPlayState = 'paused';
-    velocidadActual = 0;
-  });
-  
-  slider.addEventListener('mouseleave', () => {
-    slider.style.animationPlayState = 'running';
-  });
-  
-  // Variable para controlar la velocidad durante hover
-  let velocidadActual = velocidad;
-  
-  function animarConPausa() {
-    if (velocidadActual > 0) {
-      scrollPosition += velocidadActual;
-      
-      const anchoContenido = slider.scrollWidth / 2;
-      
-      if (scrollPosition >= anchoContenido) {
-        scrollPosition = 0;
-      }
-      
-      slider.style.transform = `translateX(-${scrollPosition}px)`;
-    }
-    
-    requestAnimationFrame(animarConPausa);
-  }
-  
-  // Reemplazar la función de animación con la que soporta pausa
-  slider.addEventListener('mouseenter', () => {
-    velocidadActual = 0;
-  });
-  
-  slider.addEventListener('mouseleave', () => {
-    velocidadActual = velocidad;
-  });
-  
-  requestAnimationFrame(animarConPausa);
-}
+// ===============================================
+// CREAR TARJETA DE PROMOCIÓN - CON DATA ATTRIBUTES
+// ===============================================
+function crearPromoCard(promo) {
+  const precioOriginal = promo.precio_original || promo.precio_oferta * 1.5;
+  const ahorro = precioOriginal - promo.precio_oferta;
+  const descuento = Math.round((ahorro / precioOriginal) * 100);
 
-function crearPromoCard(promo, index) {
-  // Usar un ID único que incluya el índice para evitar duplicados
-  const uniqueId = `${promo.id}_${index}`;
-  
   return `
-    <div class="promo-banner-slide" data-promo-id="${promo.id}" data-promo-index="${index}" data-promo-titulo="${promo.titulo}" data-promo-precio="${promo.precio_oferta}" data-promo-imagen="${promo.imagen}" data-promo-descripcion="${promo.descripcion || ''}">
-      <img src="${promo.imagen}" alt="${promo.titulo}">
-
-      <div class="promo-banner-content">
-        <h3 class="promo-banner-title">${promo.titulo}</h3>
-        <p class="promo-banner-desc">${promo.descripcion ?? ""}</p>
-        <div class="promo-banner-price">S/ ${promo.precio_oferta}</div>
-        <button class="promo-add-btn" onclick="agregarPromocionAlCarrito('${promo.id}', event)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          Agregar
-        </button>
+    <div class="promo-card" 
+         data-promo-id="${promo.id}"
+         data-promo-titulo="${encodeURIComponent(promo.titulo)}"
+         data-promo-precio="${promo.precio_oferta}"
+         data-promo-precio-original="${promo.precio_original || ''}"
+         data-promo-imagen="${promo.imagen || 'img/default-promo.jpg'}"
+         data-promo-descripcion="${encodeURIComponent(promo.descripcion || '')}"
+         onclick="abrirModalPromocionRapido(this)">
+      
+      ${descuento > 0 ? `
+        <div class="promo-badge">
+          -${descuento}% OFF
+        </div>
+      ` : ''}
+      
+      <div class="promo-card-image">
+        <img src="${promo.imagen || 'img/default-promo.jpg'}" alt="${promo.titulo}">
+      </div>
+      
+      <div class="promo-card-content">
+        <h3 class="promo-card-title">${promo.titulo}</h3>
+        
+        <p class="promo-card-description">
+          ${promo.descripcion || '¡Aprovecha esta increíble oferta por tiempo limitado!'}
+        </p>
+        
+        <div class="promo-card-prices">
+          <span class="promo-price-current">S/ ${parseFloat(promo.precio_oferta).toFixed(2)}</span>
+          ${promo.precio_original ? `
+            <span class="promo-price-original">S/ ${parseFloat(promo.precio_original).toFixed(2)}</span>
+          ` : ''}
+        </div>
+        
+        <div class="promo-card-footer">
+          ${ahorro > 0 ? `
+            <div class="promo-saving">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              Ahorras S/ ${ahorro.toFixed(2)}
+            </div>
+          ` : '<div></div>'}
+          
+          <button class="promo-add-button" onclick="event.stopPropagation(); window.agregarPromocionRapida(event, this)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            Agregar
+          </button>
+        </div>
       </div>
     </div>
   `;
 }
 
-// Configurar eventos de click en las promociones
-function configurarEventosPromociones(promos) {
-  const slides = document.querySelectorAll('.promo-banner-slide');
-  
-  slides.forEach((slide) => {
-    const promoId = slide.getAttribute('data-promo-id');
-    const promoTitulo = slide.getAttribute('data-promo-titulo');
-    const promoPrecio = slide.getAttribute('data-promo-precio');
-    const promoImagen = slide.getAttribute('data-promo-imagen');
-    const promoDescripcion = slide.getAttribute('data-promo-descripcion');
-    
-    if (!promoId) return;
-    
-    // Click en toda la tarjeta
-    slide.addEventListener('click', (e) => {
-      // Evitar doble trigger si se clickea el botón
-      if (e.target.closest('.promo-add-btn')) return;
-      
-      e.preventDefault();
-      e.stopPropagation();
-      
-      console.log("🎁 Promoción clickeada:", promoTitulo);
-      
-      // Verificar si las funciones existen
-      if (typeof verificarSesion !== 'function') {
-        console.error("❌ Función verificarSesion no disponible");
-        return;
-      }
-      
-      if (typeof agregarAlCarrito !== 'function') {
-        console.error("❌ Función agregarAlCarrito no disponible");
-        return;
-      }
-      
-      // Verificar sesión
-      if (!verificarSesion()) {
-        console.log("❌ Usuario no autenticado");
-        if (typeof mostrarModalAuth === 'function') {
-          mostrarModalAuth();
-        } else {
-          alert("Debes iniciar sesión para agregar productos al carrito");
-        }
-        return;
-      }
-      
-      // Crear objeto producto compatible con el carrito
-      const productoPromo = {
-        id: `promo_${promoId}`,
-        nombre: promoTitulo,
-        precio: parseFloat(promoPrecio),
-        imagen: promoImagen,
-        descripcion: promoDescripcion || "Promoción especial"
-      };
-      
-      console.log("📦 Agregando promoción al carrito:", productoPromo);
-      
-      // Agregar al carrito usando la función existente
-      agregarAlCarrito(productoPromo);
-      
-      // Feedback visual
-      slide.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        slide.style.transform = '';
-      }, 200);
-    });
-  });
+// ===============================================
+// CREAR SKELETONS DE CARGA
+// ===============================================
+function crearSkeletons(cantidad = 3) {
+  let html = '';
+  for (let i = 0; i < cantidad; i++) {
+    html += `
+      <div class="promo-skeleton">
+        <div class="promo-skeleton-image"></div>
+        <div class="promo-skeleton-content">
+          <div class="promo-skeleton-title"></div>
+          <div class="promo-skeleton-text"></div>
+          <div class="promo-skeleton-text" style="width: 60%;"></div>
+          <div class="promo-skeleton-price"></div>
+        </div>
+      </div>
+    `;
+  }
+  return html;
 }
 
-// Función global para agregar desde el botón
-window.agregarPromocionAlCarrito = function(promoId, event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
+// ===============================================
+// ✅ ABRIR MODAL RÁPIDO - SIN PETICIÓN EXTRA
+// ===============================================
+window.abrirModalPromocionRapido = function(cardElement) {
+  console.log("🎁 Abriendo modal de promoción (rápido)");
+  
+  // Obtener datos directamente del elemento
+  const promoId = cardElement.getAttribute('data-promo-id');
+  const titulo = decodeURIComponent(cardElement.getAttribute('data-promo-titulo'));
+  const precio = parseFloat(cardElement.getAttribute('data-promo-precio'));
+  const precioOriginal = cardElement.getAttribute('data-promo-precio-original');
+  const imagen = cardElement.getAttribute('data-promo-imagen');
+  const descripcion = decodeURIComponent(cardElement.getAttribute('data-promo-descripcion') || '');
+  
+  // Crear objeto compatible con el modal
+  const promocionParaModal = {
+    id: `promo_${promoId}`,
+    titulo: titulo,
+    nombre: titulo,
+    precio_oferta: precio,
+    precio_original: precioOriginal ? parseFloat(precioOriginal) : null,
+    precio: precio,
+    imagen: imagen,
+    descripcion: descripcion || "¡Aprovecha esta oferta especial!",
+    categoria: "Promoción"
+  };
+  
+  // Abrir modal
+  if (typeof window.abrirModalProducto === 'function') {
+    window.abrirModalProducto(promocionParaModal, true);
+  } else {
+    console.error("❌ window.abrirModalProducto no está disponible");
+  }
+};
+
+// ===============================================
+// ABRIR MODAL DE PROMOCIÓN (Legacy - mantener por compatibilidad)
+// ===============================================
+window.abrirModalPromocion = async function(promoId) {
+  console.log("🎁 Abriendo modal de promoción:", promoId);
+  
+  // Primero intentar buscar en cache
+  let promo = promocionesCache.find(p => p.id == promoId);
+  
+  // Si no está en cache, buscar en el servidor
+  if (!promo) {
+    try {
+      const response = await fetch("http://localhost:3000/api/menu/promociones");
+      const promos = await response.json();
+      promocionesCache = promos;
+      promo = promos.find(p => p.id == promoId);
+    } catch (error) {
+      console.error("❌ Error al obtener promoción:", error);
+      return;
+    }
   }
   
-  console.log("🎁 Botón de promoción clickeado:", promoId);
-  
-  const slide = document.querySelector(`[data-promo-id="${promoId}"]`);
-  if (!slide) {
-    console.error("❌ No se encontró la tarjeta de promoción");
+  if (!promo) {
+    console.error("❌ Promoción no encontrada");
     return;
   }
   
-  const promoTitulo = slide.getAttribute('data-promo-titulo');
-  const promoPrecio = slide.getAttribute('data-promo-precio');
-  const promoImagen = slide.getAttribute('data-promo-imagen');
-  const promoDescripcion = slide.getAttribute('data-promo-descripcion');
+  // Crear objeto compatible con el modal de producto
+  const promocionParaModal = {
+    id: `promo_${promo.id}`,
+    titulo: promo.titulo,
+    nombre: promo.titulo,
+    precio_oferta: parseFloat(promo.precio_oferta),
+    precio_original: promo.precio_original ? parseFloat(promo.precio_original) : null,
+    precio: parseFloat(promo.precio_oferta),
+    imagen: promo.imagen,
+    descripcion: promo.descripcion || "¡Aprovecha esta oferta especial!",
+    categoria: "Promoción"
+  };
   
-  // Verificar si las funciones existen
-  if (typeof verificarSesion !== 'function') {
-    console.error("❌ Función verificarSesion no disponible");
-    alert("Error: Funciones del carrito no disponibles. Recarga la página.");
-    return;
+  // Abrir modal
+  if (typeof window.abrirModalProducto === 'function') {
+    window.abrirModalProducto(promocionParaModal, true);
+  } else {
+    console.error("❌ window.abrirModalProducto no está disponible");
   }
+};
+
+// ===============================================
+// ✅ AGREGAR PROMOCIÓN RÁPIDA - VERSIÓN CORREGIDA
+// ===============================================
+window.agregarPromocionRapida = async function(event, cardElement) {
+  event.stopPropagation(); // Evitar que se abra el modal
+  
+  console.log("➕ Agregando promoción al carrito (rápido)");
+  console.log("🔍 Elemento recibido:", cardElement);
   
   // Verificar sesión
-  if (!verificarSesion()) {
+  if (typeof window.verificarSesion !== 'function') {
+    console.error("❌ window.verificarSesion no está disponible");
+    alert("El sistema aún se está cargando. Por favor, espera un momento.");
+    return;
+  }
+  
+  if (!window.verificarSesion()) {
     console.log("❌ Usuario no autenticado");
-    if (typeof mostrarModalAuth === 'function') {
-      mostrarModalAuth();
+    if (typeof window.mostrarModalAuth === 'function') {
+      window.mostrarModalAuth();
     } else {
       alert("Debes iniciar sesión para agregar productos al carrito");
     }
     return;
   }
   
-  if (typeof agregarAlCarrito !== 'function') {
-    console.error("❌ Función agregarAlCarrito no disponible");
-    alert("Error: Funciones del carrito no disponibles. Recarga la página.");
+  // ✅ OBTENER DATOS DIRECTAMENTE DEL ELEMENTO
+  // El elemento puede ser el botón, así que buscamos la tarjeta padre
+  const card = cardElement.closest('.promo-card');
+  
+  if (!card) {
+    console.error("❌ No se encontró la tarjeta de promoción");
     return;
   }
   
-  // Crear objeto producto compatible con el carrito
+  const promoId = card.getAttribute('data-promo-id');
+  const titulo = decodeURIComponent(card.getAttribute('data-promo-titulo'));
+  const precio = parseFloat(card.getAttribute('data-promo-precio'));
+  const imagen = card.getAttribute('data-promo-imagen');
+  const descripcion = decodeURIComponent(card.getAttribute('data-promo-descripcion') || '');
+  
+  console.log("📋 Datos extraídos:");
+  console.log("  - ID:", promoId);
+  console.log("  - Título:", titulo);
+  console.log("  - Precio:", precio);
+  
+  if (!promoId) {
+    console.error("❌ No se pudo obtener el ID de la promoción");
+    return;
+  }
+  
+  // Crear objeto producto para el carrito
   const productoPromo = {
     id: `promo_${promoId}`,
-    nombre: promoTitulo,
-    precio: parseFloat(promoPrecio),
-    imagen: promoImagen,
-    descripcion: promoDescripcion || "Promoción especial"
+    nombre: titulo,
+    titulo: titulo,
+    precio_oferta: precio,
+    precio: precio,
+    imagen: imagen,
+    descripcion: descripcion || "Promoción especial"
   };
   
-  console.log("📦 Agregando promoción al carrito:", productoPromo);
+  console.log("📦 Agregando al carrito:", productoPromo);
   
   // Agregar al carrito
-  agregarAlCarrito(productoPromo);
+  if (typeof window.agregarAlCarrito === 'function') {
+    await window.agregarAlCarrito(productoPromo);
+    
+    // Feedback visual en el botón
+    const btn = event.target.closest('.promo-add-button');
+    if (btn) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> ¡Agregado!';
+      btn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+      }, 1500);
+    }
+    
+    console.log("✅ Promoción agregada al carrito");
+  } else {
+    console.error("❌ window.agregarAlCarrito no está disponible");
+  }
+};
+
+// ===============================================
+// AGREGAR PROMOCIÓN DIRECTAMENTE AL CARRITO (Legacy)
+// ===============================================
+window.agregarPromocionDirecta = async function(event, promoId) {
+  event.stopPropagation(); // Evitar que se abra el modal
   
-  // Feedback visual
-  slide.style.transform = 'scale(0.95)';
-  setTimeout(() => {
-    slide.style.transform = '';
-  }, 200);
+  console.log("➕ Agregando promoción al carrito:", promoId);
+  
+  // Verificar sesión
+  if (typeof window.verificarSesion !== 'function') {
+    console.error("❌ window.verificarSesion no está disponible");
+    alert("El sistema aún se está cargando. Por favor, espera un momento.");
+    return;
+  }
+  
+  if (!window.verificarSesion()) {
+    console.log("❌ Usuario no autenticado");
+    if (typeof window.mostrarModalAuth === 'function') {
+      window.mostrarModalAuth();
+    } else {
+      alert("Debes iniciar sesión para agregar productos al carrito");
+    }
+    return;
+  }
+  
+  // Buscar en cache primero
+  let promo = promocionesCache.find(p => p.id == promoId);
+  
+  // Si no está en cache, buscar en el servidor
+  if (!promo) {
+    try {
+      const response = await fetch("http://localhost:3000/api/menu/promociones");
+      const promos = await response.json();
+      promocionesCache = promos;
+      promo = promos.find(p => p.id == promoId);
+    } catch (error) {
+      console.error("❌ Error al obtener promoción:", error);
+      window.mostrarNotificacion("Error al agregar la promoción", "error");
+      return;
+    }
+  }
+  
+  if (!promo) {
+    console.error("❌ Promoción no encontrada");
+    return;
+  }
+  
+  // Crear objeto producto para el carrito
+  const productoPromo = {
+    id: `promo_${promo.id}`,
+    nombre: promo.titulo,
+    titulo: promo.titulo,
+    precio_oferta: parseFloat(promo.precio_oferta),
+    precio: parseFloat(promo.precio_oferta),
+    imagen: promo.imagen,
+    descripcion: promo.descripcion || "Promoción especial"
+  };
+  
+  // Agregar al carrito
+  if (typeof window.agregarAlCarrito === 'function') {
+    await window.agregarAlCarrito(productoPromo);
+    
+    // Feedback visual en el botón
+    const btn = event.target.closest('.promo-add-button');
+    if (btn) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> ¡Agregado!';
+      btn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+      }, 1500);
+    }
+    
+    console.log("✅ Promoción agregada al carrito");
+  } else {
+    console.error("❌ window.agregarAlCarrito no está disponible");
+  }
+};
+
+// ===============================================
+// CARGAR AL INICIAR LA PÁGINA
+// ===============================================
+document.addEventListener("DOMContentLoaded", cargarPromociones);
+
+console.log("✅ promociones-banner.js cargado (versión estática optimizada)");
+
+// ===============================================
+// CREAR SKELETONS DE CARGA
+// ===============================================
+function crearSkeletons(cantidad = 3) {
+  let html = '';
+  for (let i = 0; i < cantidad; i++) {
+    html += `
+      <div class="promo-skeleton">
+        <div class="promo-skeleton-image"></div>
+        <div class="promo-skeleton-content">
+          <div class="promo-skeleton-title"></div>
+          <div class="promo-skeleton-text"></div>
+          <div class="promo-skeleton-text" style="width: 60%;"></div>
+          <div class="promo-skeleton-price"></div>
+        </div>
+      </div>
+    `;
+  }
+  return html;
 }
 
+// ===============================================
+// ABRIR MODAL DE PROMOCIÓN
+// ===============================================
+window.abrirModalPromocion = async function(promoId) {
+  console.log("🎁 Abriendo modal de promoción:", promoId);
+  
+  try {
+    // Obtener datos de la promoción
+    const response = await fetch("http://localhost:3000/api/menu/promociones");
+    const promos = await response.json();
+    const promo = promos.find(p => p.id == promoId);
+    
+    if (!promo) {
+      console.error("❌ Promoción no encontrada");
+      return;
+    }
+    
+    // Crear objeto compatible con el modal de producto
+    const promocionParaModal = {
+      id: `promo_${promo.id}`,
+      titulo: promo.titulo,
+      nombre: promo.titulo,
+      precio_oferta: parseFloat(promo.precio_oferta),
+      precio_original: promo.precio_original ? parseFloat(promo.precio_original) : null,
+      precio: parseFloat(promo.precio_oferta),
+      imagen: promo.imagen,
+      descripcion: promo.descripcion || "¡Aprovecha esta oferta especial!",
+      categoria: "Promoción"
+    };
+    
+    // Abrir modal
+    if (typeof window.abrirModalProducto === 'function') {
+      window.abrirModalProducto(promocionParaModal, true);
+    } else {
+      console.error("❌ window.abrirModalProducto no está disponible");
+    }
+    
+  } catch (error) {
+    console.error("❌ Error al abrir modal de promoción:", error);
+  }
+};
+
+// ===============================================
+// AGREGAR PROMOCIÓN DIRECTAMENTE AL CARRITO
+// ===============================================
+window.agregarPromocionDirecta = async function(event, promoId) {
+  event.stopPropagation(); // Evitar que se abra el modal
+  
+  console.log("➕ Agregando promoción al carrito:", promoId);
+  
+  // Verificar sesión
+  if (typeof window.verificarSesion !== 'function') {
+    console.error("❌ window.verificarSesion no está disponible");
+    alert("El sistema aún se está cargando. Por favor, espera un momento.");
+    return;
+  }
+  
+  if (!window.verificarSesion()) {
+    console.log("❌ Usuario no autenticado");
+    if (typeof window.mostrarModalAuth === 'function') {
+      window.mostrarModalAuth();
+    } else {
+      alert("Debes iniciar sesión para agregar productos al carrito");
+    }
+    return;
+  }
+  
+  try {
+    // Obtener datos de la promoción
+    const response = await fetch("http://localhost:3000/api/menu/promociones");
+    const promos = await response.json();
+    const promo = promos.find(p => p.id == promoId);
+    
+    if (!promo) {
+      console.error("❌ Promoción no encontrada");
+      return;
+    }
+    
+    // Crear objeto producto para el carrito
+    const productoPromo = {
+      id: `promo_${promo.id}`,
+      nombre: promo.titulo,
+      titulo: promo.titulo,
+      precio_oferta: parseFloat(promo.precio_oferta),
+      precio: parseFloat(promo.precio_oferta),
+      imagen: promo.imagen,
+      descripcion: promo.descripcion || "Promoción especial"
+    };
+    
+    // Agregar al carrito
+    if (typeof window.agregarAlCarrito === 'function') {
+      await window.agregarAlCarrito(productoPromo);
+      
+      // Feedback visual en el botón
+      const btn = event.target.closest('.promo-add-button');
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> ¡Agregado!';
+        btn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.background = '';
+        }, 1500);
+      }
+      
+      console.log("✅ Promoción agregada al carrito");
+    } else {
+      console.error("❌ window.agregarAlCarrito no está disponible");
+    }
+    
+  } catch (error) {
+    console.error("❌ Error al agregar promoción:", error);
+    window.mostrarNotificacion("Error al agregar la promoción", "error");
+  }
+};
+
+// ===============================================
+// CARGAR AL INICIAR LA PÁGINA
+// ===============================================
 document.addEventListener("DOMContentLoaded", cargarPromociones);
+
+console.log("✅ promociones-banner.js cargado (versión estática)");

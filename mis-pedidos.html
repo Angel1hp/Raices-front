@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Pedidos - Raíces</title>
+  <link rel="icon" href="img/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/mis-pedidos.css">
+  <link rel="stylesheet" href="css/notifications.css">
+  
+  <!-- ✅ CARGAR AUTH-UTILS PRIMERO -->
+  <script src="js/auth-utils.js"></script>
+</head>
+<body>
+  <div id="navbar-container"></div>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar-container").innerHTML = html;
+        
+        setTimeout(() => {
+          if (typeof verificarSesionUsuario === "function") {
+            verificarSesionUsuario();
+          }
+        }, 100);
+      });
+  </script>
+
+  <main class="pedidos-container">
+    <div class="pedidos-wrapper">
+      <!-- Header -->
+      <div class="pedidos-header">
+        <div class="pedidos-header-content">
+          <h1>Mis Pedidos</h1>
+          <p>Historial de todas tus órdenes</p>
+        </div>
+        <div class="pedidos-stats">
+          <div class="stat-card">
+            <span class="stat-number" id="totalPedidos">0</span>
+            <span class="stat-label">Total Pedidos</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="totalGastado">S/ 0.00</span>
+            <span class="stat-label">Total Gastado</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="pedidos-filters">
+        <button class="filter-btn active" data-filter="todos">
+          <span>Todos</span>
+          <span class="filter-count" id="countTodos">0</span>
+        </button>
+        <button class="filter-btn" data-filter="pendiente">
+          <span>Pendientes</span>
+          <span class="filter-count" id="countPendiente">0</span>
+        </button>
+        <button class="filter-btn" data-filter="completado">
+          <span>Completados</span>
+          <span class="filter-count" id="countCompletado">0</span>
+        </button>
+        <button class="filter-btn" data-filter="cancelado">
+          <span>Cancelados</span>
+          <span class="filter-count" id="countCancelado">0</span>
+        </button>
+      </div>
+
+      <!-- Lista de pedidos -->
+      <div class="pedidos-list" id="pedidosList">
+        <!-- Loading spinner -->
+        <div class="pedidos-loading">
+          <div class="spinner"></div>
+          <p>Cargando pedidos...</p>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="pedidos-empty" id="pedidosEmpty" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <h3>No hay pedidos</h3>
+        <p>Aún no has realizado ningún pedido</p>
+        <a href="menu.html" class="btn-primary">Ver Menú</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de Detalle del Pedido -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal-pedido" id="modalPedido">
+    <div class="modal-header">
+      <h2>Detalle del Pedido</h2>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    
+    <div class="modal-body" id="modalBody">
+      <!-- El contenido se llenará dinámicamente -->
+    </div>
+  </div>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/mis-pedidos.js"></script>
+</body>
+</html>

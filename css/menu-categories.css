@@ -24,22 +24,21 @@
 .categories-header {
   text-align: center;
   padding: 1.5rem 1rem 1rem;
-  background: linear-gradient(to bottom, #ffffff, #f8f8f8);
-  border-bottom: 2px solid #e0e0e0;
+  background: linear-gradient(to bottom, #ffffff , #ffffff );
+  border-bottom: 2px solid #ffffff;
   position: relative;
 }
 
 .categories-header h2 {
   font-size: 28px;
   font-weight: 700;
-  color: #2a2a2a;
+  color: #000000;
   margin: 0 0 8px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  font-family: "Stack Sans Text", sans-serif;
-}
+    font-family: "Belleza", sans-serif;}
 
 .categories-icon {
   font-size: 32px;
@@ -54,7 +53,7 @@
 
 .categories-subtitle {
   font-size: 14px;
-  color: #666;
+  color: #000000;
   margin: 0;
   font-weight: 400;
   font-style: italic;
@@ -136,8 +135,9 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border: none;
-  border-radius: 2px;
+  border: 0px;
+  border-radius: 1px;
+  
   cursor: pointer;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
@@ -147,7 +147,7 @@
 /* Hover suave */
 .category-btn:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(236, 219, 219, 0.2);
 }
 
 /* Overlay oscuro */
@@ -156,7 +156,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 0%;
   height: 100%;
   background: linear-gradient(
     to bottom,
@@ -198,7 +198,7 @@
 .category-name {
   position: relative;
   z-index: 2;
-  font-size: 18px;
+  font-size: 8px;
   font-weight: 700;
   color: white;
   text-align: center;
@@ -460,7 +460,7 @@
 }
 
 .categories {
-  gap: 0px !important;
+  gap: 9px !important;
 }
 
 /* Tablets y superiores */
@@ -476,4 +476,29 @@
   .categories-subtitle {
     font-size: 16px;
   }
+}
+/* =====================================================
+   FORZAR ANCHO COMPLETO DE LA SECCIÓN DE CATEGORÍAS
+===================================================== */
+.categories-section {
+  width: 100vw !important;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Encabezado FULL WIDTH */
+.categories-header {
+  width: 100vw !important;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Contenedor del carrusel FULL WIDTH */
+.categories-container-full {
+  width: 100vw !important;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }

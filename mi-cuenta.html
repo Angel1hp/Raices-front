@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Cuenta - Raíces</title>
+  <link rel="icon" href="img/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/mi-cuenta.css">
+  <link rel="stylesheet" href="css/notifications.css">
+  
+  <!-- ✅ CARGAR AUTH-UTILS PRIMERO -->
+  <script src="js/auth-utils.js"></script>
+</head>
+<body>
+  <div id="navbar-container"></div>
+
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar-container").innerHTML = html;
+        
+        setTimeout(() => {
+          if (typeof verificarSesionUsuario === "function") {
+            verificarSesionUsuario();
+          }
+        }, 100);
+      });
+  </script>
+
+  <main class="cuenta-container">
+    <div class="cuenta-wrapper">
+      <!-- Header -->
+      <div class="cuenta-header">
+        <div class="cuenta-header-content">
+          <h1>Mi Cuenta</h1>
+          <p>Gestiona tu información personal</p>
+        </div>
+      </div>
+
+      <!-- Contenido -->
+      <div class="cuenta-content">
+        
+        <!-- Información Personal -->
+        <section class="cuenta-section">
+          <div class="section-header">
+            <h2>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Información Personal
+            </h2>
+            <button class="btn-edit" id="btnEditPersonal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              Editar
+            </button>
+          </div>
+
+          <div class="info-grid" id="infoPersonal">
+            <div class="info-item">
+              <span class="info-label">Nombre Completo</span>
+              <span class="info-value" id="nombreCompleto">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Usuario</span>
+              <span class="info-value" id="usuario">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Email</span>
+              <span class="info-value" id="email">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Teléfono</span>
+              <span class="info-value" id="telefono">-</span>
+            </div>
+          </div>
+
+          <!-- Formulario de edición (oculto por defecto) -->
+          <form class="edit-form" id="formEditPersonal" style="display: none;">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="editNombre" required>
+              </div>
+              <div class="form-group">
+                <label>Apellido</label>
+                <input type="text" id="editApellido" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="editEmail" required>
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="editTelefono" maxlength="9" required>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" id="btnCancelPersonal">Cancelar</button>
+              <button type="submit" class="btn-save">Guardar Cambios</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Dirección -->
+        <section class="cuenta-section">
+          <div class="section-header">
+            <h2>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Dirección de Entrega
+            </h2>
+            <button class="btn-edit" id="btnEditDireccion">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              Editar
+            </button>
+          </div>
+
+          <div class="info-grid" id="infoDireccion">
+            <div class="info-item full-width">
+              <span class="info-label">Dirección</span>
+              <span class="info-value" id="direccion">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Distrito</span>
+              <span class="info-value" id="distrito">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Provincia</span>
+              <span class="info-value" id="provincia">-</span>
+            </div>
+          </div>
+
+          <!-- Formulario de edición dirección -->
+          <form class="edit-form" id="formEditDireccion" style="display: none;">
+            <div class="form-group full-width">
+              <label>Dirección Completa</label>
+              <input type="text" id="editDireccion" placeholder="Calle, número, referencias" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Departamento</label>
+                <select id="editDepartamento" required>
+                  <option value="">Seleccione departamento</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Provincia</label>
+                <select id="editProvincia" required disabled>
+                  <option value="">Seleccione provincia</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Distrito</label>
+              <select id="editDistrito" required disabled>
+                <option value="">Seleccione distrito</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" id="btnCancelDireccion">Cancelar</button>
+              <button type="submit" class="btn-save">Guardar Cambios</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Documento -->
+        <section class="cuenta-section">
+          <div class="section-header">
+            <h2>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+              Información Fiscal
+            </h2>
+            <button class="btn-edit" id="btnEditFiscal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              Editar
+            </button>
+          </div>
+
+          <div class="info-grid" id="infoFiscal">
+            <div class="info-item">
+              <span class="info-label">Número de Documento</span>
+              <span class="info-value" id="numeroDocumento">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">RUC</span>
+              <span class="info-value" id="ruc">-</span>
+            </div>
+          </div>
+
+          <!-- Formulario de edición fiscal -->
+          <form class="edit-form" id="formEditFiscal" style="display: none;">
+            <div class="form-group">
+              <label>RUC (11 dígitos)</label>
+              <input type="text" id="editRuc" maxlength="11" pattern="[0-9]{11}" placeholder="Ingrese su RUC de 11 dígitos">
+              <small style="color: #666; font-size: 0.85em; margin-top: 4px; display: block;">Opcional: Solo si necesita factura</small>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" id="btnCancelFiscal">Cancelar</button>
+              <button type="submit" class="btn-save">Guardar Cambios</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Seguridad -->
+        <section class="cuenta-section">
+          <div class="section-header">
+            <h2>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              Seguridad
+            </h2>
+            <button class="btn-edit" id="btnChangePassword">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+              Cambiar Contraseña
+            </button>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Contraseña</span>
+              <span class="info-value">••••••••</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Última actualización</span>
+              <span class="info-value" id="fechaRegistro">-</span>
+            </div>
+          </div>
+
+          <!-- Formulario cambiar contraseña -->
+          <form class="edit-form" id="formChangePassword" style="display: none;">
+            <div class="form-group">
+              <label>Contraseña Actual</label>
+              <input type="password" id="currentPassword" required>
+            </div>
+            <div class="form-group">
+              <label>Nueva Contraseña</label>
+              <input type="password" id="newPassword" minlength="6" required>
+            </div>
+            <div class="form-group">
+              <label>Confirmar Nueva Contraseña</label>
+              <input type="password" id="confirmPassword" minlength="6" required>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" id="btnCancelPassword">Cancelar</button>
+              <button type="submit" class="btn-save">Cambiar Contraseña</button>
+            </div>
+          </form>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/mi-cuenta.js"></script>
+</body>
+</html>

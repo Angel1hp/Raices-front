@@ -13,59 +13,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:wght@200..700&display=swap" rel="stylesheet">
- 
-<link rel="stylesheet" href="css/menu.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Belleza&display=swap" rel="stylesheet"> 
+  
+  <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/menu-filters.css">
   <link rel="stylesheet" href="css/menu-categories.css">
   <link rel="stylesheet" href="css/modalmenu.css">
   <link rel="stylesheet" href="css/auth-modal.css">
   <link rel="stylesheet" href="css/promociones-banner.css">
+  <link rel="stylesheet" href="css/product-modal.css">
+  <link rel="stylesheet" href="css/checkout.css">
 </head>
 <body>
   <div id="navbar-container"></div>
 
   <main class="main-container">
-    <!-- Contenido principal -->
     <div class="menu-content-full">
       
-      <!-- ✅ PRIMERO: Banner de Promociones -->
-<div class="promo-section">
-  <div class="promo-header">
-    <span class="promo-badge">🔥 OFERTAS ESPECIALES</span>
-    <h2 class="promo-title">Promociones del Día</h2>
-    <p class="promo-subtitle">¡Aprovecha nuestras mejores ofertas mientras duren!</p>
-  </div>
-  
-  <div class="promo-banner-container">
-    <div class="promo-slider" id="promoSlider">
-      <!-- Las promociones se insertarán aquí por JS -->
-    </div>
-  </div>
-</div>
-
-      <!-- ✅ SEGUNDO: Categorías -->
-<div class="categories-section">
-  <div class="categories-header">
-    <h2><span class="categories-icon"></span> Nuestro Menú</h2>
-    <p class="categories-subtitle">Explora nuestras deliciosas categorías</p>
-  </div>
-  
-  <div class="categories-container-full">
-    <button class="category-scroll-btn left" id="scrollLeft">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M15 18l-6-6 6-6"/>
-      </svg>
-    </button>
-    
-    <div class="categories-wrapper">
-      <div class="categories">
-        <!-- Las categorías se insertan aquí dinámicamente por main.js -->
+      <!-- ✅ CATEGORÍAS -->
+      <div class="categories-section">
+        <div class="categories-header">
+          <h2><span class="categories-icon"></span> Nuestra Carta</h2>
+          <p class="categories-subtitle">Explora nuestros deliciosos platos</p>
+        </div>
+        
+        <div class="categories-container-full">
+          <button class="category-scroll-btn left" id="scrollLeft">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          
+          <div class="categories-wrapper">
+            <div class="categories">
+              <!-- Las categorías se insertan aquí dinámicamente por main.js -->
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
       <!-- Barra de búsqueda debajo de categorías -->
       <div class="top-search-bar">
@@ -81,96 +67,45 @@
         </div>
       </div>
 
-      <!-- Contenedor con sidebar y productos -->
-      <div class="content-with-sidebar">
-        <!-- Sidebar de filtros -->
-        <aside class="filters-sidebar">
-          <div class="filters-header">
-            <h3>Filtros</h3>
-            <button class="btn-clear-filters" id="clearFilters">Limpiar</button>
+      <!-- Grid de productos -->
+      <div class="menu-products-container">
+        <div id="menu-grid">
+          <!-- Spinner de carga inicial -->
+          <div class="loading-spinner" id="loading-spinner">
+            <div class="spinner"></div>
+            <p>Preparando su experiencia culinaria...</p>
           </div>
+        </div>
 
-          <!-- Filtro de precio -->
-          <div class="filter-section">
-            <h4 class="filter-title">Rango de Precio</h4>
-            <div class="price-filter">
-              <div class="price-inputs">
-                <div class="price-input-group">
-                  <label>Mínimo</label>
-                  <div class="input-wrapper">
-                    <span class="currency">S/</span>
-                    <input type="number" id="minPrice" class="price-input" min="0" step="5" value="0">
-                  </div>
-                </div>
-                <div class="price-input-group">
-                  <label>Máximo</label>
-                  <div class="input-wrapper">
-                    <span class="currency">S/</span>
-                    <input type="number" id="maxPrice" class="price-input" min="0" step="5" value="100">
-                  </div>
-                </div>
-              </div>
-              <div class="price-range-slider">
-                <input type="range" id="priceRange" min="0" max="100" value="100" step="5">
-                <div class="range-labels">
-                  <span>S/ 0</span>
-                  <span id="maxPriceLabel">S/ 100</span>
-                </div>
-              </div>
-            </div>
+        <!-- Paginación -->
+        <div class="pagination-container" id="paginationContainer" style="display: none;">
+          <button class="pagination-btn" id="prevPage" disabled>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Anterior
+          </button>
+          <div class="pagination-pages" id="paginationPages">
+            <!-- Los números de página se generarán aquí -->
           </div>
+          <button class="pagination-btn" id="nextPage">
+            Siguiente
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
 
-          <!-- Filtros rápidos de precio -->
-          <div class="filter-section">
-            <h4 class="filter-title">Filtros Rápidos</h4>
-            <div class="quick-filters">
-              <button class="quick-filter-btn" data-range="0-20">Hasta S/ 20</button>
-              <button class="quick-filter-btn" data-range="20-40">S/ 20 - S/ 40</button>
-              <button class="quick-filter-btn" data-range="40-60">S/ 40 - S/ 60</button>
-              <button class="quick-filter-btn" data-range="60-100">S/ 60+</button>
-            </div>
-          </div>
-
-          <!-- Información -->
-          <div class="filter-info">
-            <div class="info-item">
-              <span class="info-icon">🍽️</span>
-              <div>
-                <strong id="totalProducts">0</strong>
-                <span>productos encontrados</span>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Grid de productos -->
-        <div class="menu-products-container">
-          <div id="menu-grid">
-            <!-- Spinner de carga inicial -->
-            <div class="loading-spinner" id="loading-spinner">
-              <div class="spinner"></div>
-              <p>Preparando su experiencia culinaria...</p>
-            </div>
-          </div>
-
-          <!-- Paginación -->
-          <div class="pagination-container" id="paginationContainer" style="display: none;">
-            <button class="pagination-btn" id="prevPage" disabled>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              Anterior
-            </button>
-            <div class="pagination-pages" id="paginationPages">
-              <!-- Los números de página se generarán aquí -->
-            </div>
-            <button class="pagination-btn" id="nextPage">
-              Siguiente
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
+      <!-- ✅ PROMOCIONES ESTÁTICAS - DEBAJO DE LOS PRODUCTOS -->
+      <div class="promo-section">
+        <div class="promo-header-static">
+          <h2> Promociones Especiales</h2>
+          <p>Aprovecha nuestras ofertas exclusivas</p>
+        </div>
+        
+        <div class="promo-grid" id="promoGrid">
+          <!-- Las promociones se cargarán aquí -->
         </div>
       </div>
     </div>
@@ -188,11 +123,6 @@
       </div>
     </div>
   </footer>
-
-  <script src="js/main.js"></script>
-  <script src="js/menu-filters.js"></script>
-  <script src="js/category-scroll.js"></script>
-  <script src="js/promociones-banner.js"></script>
 
   <script>
   fetch("navbar.html")
@@ -261,7 +191,7 @@
           <span class="cart-summary-value">S/ <span id="cartSubtotal">0.00</span></span>
         </div>
       </div>
-      
+  
       <div class="cart-total">
         <span class="cart-total-label">Total:</span>
         <span class="cart-total-value">S/ <span id="cartTotal">0.00</span></span>
@@ -274,6 +204,183 @@
       <button class="cart-clear-btn" id="cartClear">
         Vaciar Carrito
       </button>
+    </div>
+
+    <!-- CHECKOUT CONTAINER -->
+    <div class="checkout-container" id="checkoutContainer">
+      <div class="checkout-header">
+        <button class="checkout-back-btn" onclick="volverAlCarrito()">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 4L6 10L12 16"/>
+          </svg>
+        </button>
+        <h2 class="checkout-title">Finalizar Compra</h2>
+      </div>
+
+      <div class="checkout-steps">
+        <div class="checkout-step active">
+          <div class="step-number">1</div>
+          <div class="step-label">Entrega</div>
+        </div>
+        <div class="checkout-step">
+          <div class="step-number">2</div>
+          <div class="step-label">Pago</div>
+        </div>
+        <div class="checkout-step">
+          <div class="step-number">3</div>
+          <div class="step-label">Confirmar</div>
+        </div>
+      </div>
+
+      <div class="checkout-summary">
+        <h3>📦 Resumen del Pedido</h3>
+        <div id="checkoutSummaryItems"></div>
+        <div class="summary-total">
+          <span class="summary-total-label">Total:</span>
+          <span class="summary-total-value" id="checkoutSummaryTotal">S/ 0.00</span>
+        </div>
+      </div>
+
+      <!-- PASO 1: ENTREGA -->
+      <div class="checkout-step-content" style="display: block;">
+        <div class="delivery-section">
+          <h3>🚚 Datos de Entrega</h3>
+          <p style="color: #666; margin-bottom: 20px; font-size: 14px;">📍 Realizamos delivery a toda Lima Metropolitana (30-45 min aprox.)</p>
+          
+          <div class="form-group">
+            <label>Dirección de entrega *</label>
+            <input type="text" id="deliveryAddress" placeholder="Calle, número, distrito" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Referencia</label>
+            <textarea id="deliveryReference" placeholder="Cerca de..., color de casa, etc." rows="2"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Hora de entrega *</label>
+            <select id="deliveryTime" required>
+              <option value="">Selecciona una hora</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="12:30">12:30 PM</option>
+              <option value="13:00">1:00 PM</option>
+              <option value="13:30">1:30 PM</option>
+              <option value="14:00">2:00 PM</option>
+              <option value="14:30">2:30 PM</option>
+              <option value="19:00">7:00 PM</option>
+              <option value="19:30">7:30 PM</option>
+              <option value="20:00">8:00 PM</option>
+              <option value="20:30">8:30 PM</option>
+              <option value="21:00">9:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checkout-actions">
+          <button class="checkout-btn checkout-btn-primary" onclick="continuarAPago()">
+            Continuar
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 4L13 10L7 16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- PASO 2: PAGO -->
+      <div class="checkout-step-content" style="display: none;">
+        <div class="payment-section">
+          <h3>💳 Método de Pago</h3>
+          
+          <div class="payment-methods">
+            <div class="payment-method" onclick="seleccionarMetodoPago('tarjeta')">
+              <div class="payment-method-icon">💳</div>
+              <div class="payment-method-name">Tarjeta</div>
+            </div>
+            
+            <div class="payment-method" onclick="seleccionarMetodoPago('yape')">
+              <div class="payment-method-icon">📱</div>
+              <div class="payment-method-name">Yape</div>
+            </div>
+            
+            <div class="payment-method" onclick="seleccionarMetodoPago('plin')">
+              <div class="payment-method-icon">💰</div>
+              <div class="payment-method-name">Plin</div>
+            </div>
+          </div>
+
+          <!-- Formularios de pago -->
+          <div class="payment-form" id="tarjetaForm"></div>
+          <div class="payment-form" id="yapeForm"></div>
+          <div class="payment-form" id="plinForm"></div>
+        </div>
+
+        <div class="checkout-actions">
+          <button class="checkout-btn checkout-btn-secondary" onclick="mostrarPaso(1)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 4L6 10L12 16"/>
+            </svg>
+            Volver
+          </button>
+          <button class="checkout-btn checkout-btn-primary" onclick="continuarAComprobante()">
+            Continuar
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 4L13 10L7 16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- PASO 3: COMPROBANTE -->
+      <div class="checkout-step-content" style="display: none;">
+        <div class="comprobante-section">
+          <h3>📄 Tipo de Comprobante</h3>
+          
+          <div class="comprobante-options">
+            <div class="comprobante-option active" onclick="seleccionarComprobante('boleta')">
+              Boleta
+            </div>
+            <div class="comprobante-option" onclick="seleccionarComprobante('factura')">
+              Factura
+            </div>
+          </div>
+
+          <div class="ruc-input" id="rucInput">
+            <div class="form-group">
+              <label>RUC *</label>
+              <input type="text" id="rucNumber" placeholder="Ingresa tu RUC (11 dígitos)" maxlength="11">
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-actions">
+          <button class="checkout-btn checkout-btn-secondary" onclick="mostrarPaso(2)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 4L6 10L12 16"/>
+            </svg>
+            Volver
+          </button>
+          <button class="checkout-btn checkout-btn-primary" onclick="finalizarCompra()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            Finalizar Compra
+          </button>
+        </div>
+      </div>
+
+      <!-- MENSAJE DE ÉXITO -->
+      <div class="checkout-success" id="checkoutSuccess">
+        <div class="success-icon">✓</div>
+        <h3 class="success-title">¡Compra Exitosa!</h3>
+        <p class="success-message">
+          Tu pedido ha sido procesado correctamente.<br>
+          Recibirás un correo de confirmación en breve.
+        </p>
+        <div class="order-number">Orden #0000</div>
+        <button class="checkout-btn checkout-btn-primary" onclick="cerrarCheckoutExitoso()">
+          Volver al Inicio
+        </button>
+      </div>
     </div>
   </div>
 
@@ -312,6 +419,75 @@
     </div>
   </div>
 
+  <!-- Modal de Producto -->
+  <div class="product-modal-overlay" id="productModalOverlay"></div>
+  <div class="product-modal" id="productModal">
+    <button class="product-modal-close" id="productModalClose">×</button>
+    
+    <div class="product-modal-content">
+      <div class="product-modal-image">
+        <img id="productModalImage" src="" alt="">
+        <div class="product-modal-discount" id="productModalDiscount" style="display: none;">
+          <span id="productModalDiscountText"></span>
+        </div>
+      </div>
+      
+      <div class="product-modal-info">
+        <span class="product-modal-category" id="productModalCategory"></span>
+        <h2 class="product-modal-title" id="productModalTitle"></h2>
+        <p class="product-modal-description" id="productModalDescription"></p>
+        
+        <div class="product-modal-prices">
+          <span class="product-modal-price" id="productModalPrice"></span>
+          <span class="product-modal-old-price" id="productModalOldPrice" style="display: none;"></span>
+        </div>
+        
+        <div class="product-modal-quantity">
+          <span class="product-modal-quantity-label">Cantidad:</span>
+          <div class="product-modal-quantity-controls">
+            <button class="product-modal-qty-btn" id="productModalQtyMinus">−</button>
+            <span class="product-modal-qty-display" id="productModalQtyDisplay">1</span>
+            <button class="product-modal-qty-btn" id="productModalQtyPlus">+</button>
+          </div>
+        </div>
+        
+        <div class="product-modal-actions">
+          <button class="product-modal-btn product-modal-btn-primary" id="productModalAddToCart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            Agregar al Carrito
+          </button>
+        </div>
+        
+        <div class="product-modal-extra-info">
+          <div class="product-modal-info-item">
+            <span class="product-modal-info-icon">🍽️</span>
+            <span>Preparación rápida</span>
+          </div>
+          <div class="product-modal-info-item">
+            <span class="product-modal-info-icon">✨</span>
+            <span>Ingredientes frescos</span>
+          </div>
+          <div class="product-modal-info-item">
+            <span class="product-modal-info-icon">🔥</span>
+            <span>Receta tradicional</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/menu-filters.js"></script>
+  <script src="js/category-scroll.js"></script>
+  <script src="js/promociones-banner.js"></script>
   <script src="js/navbar.js"></script>
+  <script src="js/checkout.js"></script>
+  <script src="js/init-checkout.js"></script>
+  <script src="js/config-pagos.js"></script>
+  <script src="js/producto-modal.js"></script>
 </body>
 </html>
