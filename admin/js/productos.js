@@ -26,11 +26,11 @@ async function cargarProductos(tipo = 'comidas') {
 
     let endpoint;
     if (tipo === 'comidas') {
-      endpoint = 'http://localhost:3000/api/menu/comidas';
+      endpoint = 'https://raices-back.onrender.com/api/menu/comidas';
     } else if (tipo === 'bebidas') {
-      endpoint = 'http://localhost:3000/api/menu/bebidas';
+      endpoint = 'https://raices-back.onrender.com/api/menu/bebidas';
     } else if (tipo === 'promociones') {
-      endpoint = 'http://localhost:3000/api/menu/promociones';
+      endpoint = 'https://raices-back.onrender.com/api/menu/promociones';
     }
 
     const response = await fetch(endpoint);
@@ -62,7 +62,7 @@ async function cargarProductos(tipo = 'comidas') {
 }
 async function cargarCategoriasEnFiltro() {
   try {
-    const response = await fetch('http://localhost:3000/api/menu/categorias');
+    const response = await fetch('https://raices-back.onrender.com/api/menu/categorias');
     const categorias = await response.json();
     
     const select = document.getElementById('filterCategoria');
@@ -263,11 +263,11 @@ async function verDetalleProducto(id, tipo) {
     let endpoint;
     
     if (tipo === 'comidas') {
-      endpoint = `http://localhost:3000/api/menu/comidas/${id}`;
+      endpoint = `https://raices-back.onrender.com/api/menu/comidas/${id}`;
     } else if (tipo === 'bebidas') {
-      endpoint = `http://localhost:3000/api/menu/bebidas/${id}`;
+      endpoint = `https://raices-back.onrender.com/api/menu/bebidas/${id}`;
     } else if (tipo === 'promociones') {
-      endpoint = `http://localhost:3000/api/menu/promociones/${id}`;
+      endpoint = `https://raices-back.onrender.com/api/menu/promociones/${id}`;
     }
 
     const response = await fetch(endpoint);
@@ -364,11 +364,11 @@ async function editarProducto(id, tipo) {
     // Cargar datos actuales
     let endpoint;
     if (tipo === 'comidas') {
-      endpoint = `http://localhost:3000/api/menu/comidas/${id}`;
+      endpoint = `https://raices-back.onrender.com/api/menu/comidas/${id}`;
     } else if (tipo === 'bebidas') {
-      endpoint = `http://localhost:3000/api/menu/bebidas/${id}`;
+      endpoint = `https://raices-back.onrender.com/api/menu/bebidas/${id}`;
     } else if (tipo === 'promociones') {
-      endpoint = `http://localhost:3000/api/menu/promociones/${id}`;
+      endpoint = `https://raices-back.onrender.com/api/menu/promociones/${id}`;
     }
 
     const response = await fetch(endpoint);
@@ -525,11 +525,11 @@ async function editarProducto(id, tipo) {
       try {
         let updateEndpoint;
         if (tipoProducto === 'comidas') {
-          updateEndpoint = `http://localhost:3000/api/menu/comidas/${idProducto}`;
+          updateEndpoint = `https://raices-back.onrender.com/api/menu/comidas/${idProducto}`;
         } else if (tipoProducto === 'bebidas') {
-          updateEndpoint = `http://localhost:3000/api/menu/bebidas/${idProducto}`;
+          updateEndpoint = `https://raices-back.onrender.com/api/menu/bebidas/${idProducto}`;
         } else if (tipoProducto === 'promociones') {
-          updateEndpoint = `http://localhost:3000/api/menu/promociones/${idProducto}`;
+          updateEndpoint = `https://raices-back.onrender.com/api/menu/promociones/${idProducto}`;
         }
 
         const response = await fetch(updateEndpoint, {
@@ -573,8 +573,8 @@ async function toggleDisponibilidad(id, tipo, disponibleActual) {
 
   try {
     const endpoint = tipo === 'comidas'
-      ? `http://localhost:3000/api/menu/comidas/${id}`
-      : `http://localhost:3000/api/menu/bebidas/${id}`;
+      ? `https://raices-back.onrender.com/api/menu/comidas/${id}`
+      : `https://raices-back.onrender.com/api/menu/bebidas/${id}`;
 
     // Nota: Esta ruta necesita ser implementada en el backend
     const response = await fetch(endpoint, {
@@ -785,7 +785,7 @@ window.cambiarFormularioTipo = function(tipo) {
 // =====================
 async function cargarProductosDisponibles() {
   try {
-    const response = await fetch('http://localhost:3000/api/menu/productos-disponibles');
+    const response = await fetch('https://raices-back.onrender.com/api/menu/productos-disponibles');
     
     if (!response.ok) {
       throw new Error('Error al cargar productos');
@@ -1083,7 +1083,7 @@ window.eliminarItemPromocion = function(itemId) {
       imagen: document.getElementById('imagen')?.value || null,
       disponible: document.getElementById('disponible')?.checked || true
     };
-    endpoint = 'http://localhost:3000/api/menu/comidas';
+    endpoint = 'https://raices-back.onrender.com/api/menu/comidas';
     
   } else if (tipoProducto === 'bebida') {
     data = {
@@ -1095,7 +1095,7 @@ window.eliminarItemPromocion = function(itemId) {
       imagen: document.getElementById('imagen')?.value || null,
       disponible: document.getElementById('disponible')?.checked || true
     };
-    endpoint = 'http://localhost:3000/api/menu/bebidas';
+    endpoint = 'https://raices-back.onrender.com/api/menu/bebidas';
     
   } else if (tipoProducto === 'promocion') {
     // Recolectar items
@@ -1130,7 +1130,7 @@ window.eliminarItemPromocion = function(itemId) {
       activo: document.getElementById('activo')?.checked || true,
       items: items
     };
-    endpoint = 'http://localhost:3000/api/menu/promociones';
+    endpoint = 'https://raices-back.onrender.com/api/menu/promociones';
   }
 
   try {
@@ -1170,7 +1170,7 @@ window.eliminarItemPromocion = function(itemId) {
 
 async function cargarCategoriasComida() {
   try {
-    const response = await fetch('http://localhost:3000/api/menu/categorias');
+    const response = await fetch('https://raices-back.onrender.com/api/menu/categorias');
     const categorias = await response.json();
     
     const select = document.getElementById('categoria_id');

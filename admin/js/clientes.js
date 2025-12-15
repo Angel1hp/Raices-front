@@ -25,7 +25,7 @@ async function cargarClientes() {
 
     console.log('📡 Cargando clientes...');
 
-    const response = await fetch('http://localhost:3000/api/clientes');
+    const response = await fetch('https://raices-back.onrender.com/api/clientes');
     
     if (!response.ok) {
       throw new Error('Error al cargar clientes');
@@ -229,7 +229,7 @@ async function verDetalleCliente(id) {
   try {
     console.log('🔍 Ver detalle de cliente:', id);
 
-    const response = await fetch(`http://localhost:3000/api/auth/cliente/${id}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/auth/cliente/${id}`);
     
     if (!response.ok) {
       throw new Error('Error al cargar cliente');
@@ -315,7 +315,7 @@ async function verOrdenesCliente(clienteId) {
   try {
     console.log('📋 Ver órdenes del cliente:', clienteId);
 
-    const response = await fetch(`http://localhost:3000/api/checkout/ordenes/${clienteId}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/checkout/ordenes/${clienteId}`);
     
     if (!response.ok) {
       throw new Error('Error al cargar órdenes');

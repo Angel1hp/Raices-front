@@ -25,7 +25,7 @@ async function cargarOrdenes() {
 
     console.log('📡 Cargando órdenes...');
 
-    const response = await fetch('http://localhost:3000/api/checkout/ordenes/todas');
+    const response = await fetch('https://raices-back.onrender.com/api/checkout/ordenes/todas');
     
     if (!response.ok) {
       throw new Error('Error al cargar órdenes');
@@ -238,7 +238,7 @@ async function verDetalleOrden(ordenId) {
   try {
     console.log('🔍 Ver detalle de orden:', ordenId);
 
-    const response = await fetch(`http://localhost:3000/api/checkout/orden/${ordenId}`);
+    const response = await fetch(`https://raices-back.onrender.com/api/checkout/orden/${ordenId}`);
     
     if (!response.ok) {
       throw new Error('Error al cargar detalle');
@@ -343,7 +343,7 @@ async function cambiarEstadoOrden(ordenId, nuevoEstado) {
 
   try {
     // Nota: Esta ruta necesita ser implementada en el backend
-    const response = await fetch(`http://localhost:3000/api/checkout/orden/${ordenId}/estado`, {
+    const response = await fetch(`https://raices-back.onrender.com/api/checkout/orden/${ordenId}/estado`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

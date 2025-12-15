@@ -90,7 +90,7 @@ async function cargarOrdenesRecientes() {
 
     console.log('📡 Cargando órdenes recientes...');
 
-    const response = await fetchConAuth('http://localhost:3000/api/checkout/ordenes/recientes?limit=10');
+    const response = await fetchConAuth('https://raices-back.onrender.com/api/checkout/ordenes/recientes?limit=10');
     
     if (!response.ok) {
       throw new Error('Error al cargar órdenes');
@@ -146,7 +146,7 @@ async function verDetalleOrden(ordenId) {
   try {
     console.log('🔍 Ver detalle de orden:', ordenId);
 
-    const response = await fetchConAuth(`http://localhost:3000/api/checkout/orden/${ordenId}`);
+    const response = await fetchConAuth(`https://raices-back.onrender.com/api/checkout/orden/${ordenId}`);
     
     if (!response.ok) {
       throw new Error('Error al cargar detalle');

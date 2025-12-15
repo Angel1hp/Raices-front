@@ -9,7 +9,7 @@ async function cargarEstadisticas() {
   
   try {
     // Cargar datos del dashboard
-    const response = await fetch('http://localhost:3000/api/admin/dashboard', {
+    const response = await fetch('https://raices-back.onrender.com/api/admin/dashboard', {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
       }

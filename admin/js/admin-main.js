@@ -1,7 +1,7 @@
 // admin/js/admin-main.js - Funciones comunes del panel admin
 
 // ✅ DECLARAR API_URL GLOBALMENTE
-var API_URL = "http://localhost:3000/api/admin";
+var API_URL = "https://raices-back.onrender.com/api/admin";
 
 // =====================
 // FUNCIÓN PARA VERIFICAR AUTENTICACIÓN (DEBE ESTAR AL INICIO)

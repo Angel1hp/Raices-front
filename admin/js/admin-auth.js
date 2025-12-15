@@ -1,7 +1,7 @@
 // admin/js/admin-auth.js
 
 // ✅ NO declarar API_URL aquí, ya está en admin-main.js
-// const API_URL = "http://localhost:3000/api/admin"; ❌ ELIMINAR ESTA LÍNEA
+// const API_URL = "https://raices-back.onrender.com/api/admin"; ❌ ELIMINAR ESTA LÍNEA
 
 // =====================
 // TOGGLE PASSWORD
