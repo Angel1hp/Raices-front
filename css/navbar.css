@@ -1239,3 +1239,277 @@ body {
     font-size: 10px;
   }
 }
+/* ============================================
+   MEJORAS PARA EL BUSCADOR DEL NAVBAR
+   Agrega esto a tu navbar.css existente
+============================================ */
+
+/* Contenedor del buscador */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 500px;
+  margin: 0 20px;
+}
+
+/* Input de búsqueda */
+.search-bar {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: #f8f8f8;
+}
+
+.search-bar:focus {
+  border-color: #af6d6d;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(175, 109, 109, 0.1);
+}
+
+.search-bar::placeholder {
+  color: #999;
+  transition: color 0.3s;
+}
+
+.search-bar:focus::placeholder {
+  color: #bbb;
+}
+
+/* Icono de búsqueda */
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.3s;
+}
+
+.search-icon::before {
+  content: '🔍';
+  font-size: 18px;
+  display: block;
+}
+
+/* Alternativa con Font Awesome (si lo tienes) */
+.search-icon.fa-search::before {
+  content: '\f002';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  color: #999;
+}
+
+.search-icon:hover::before {
+  transform: scale(1.1);
+  color: #af6d6d;
+}
+
+/* Efecto de loading cuando se busca */
+.search-container.loading .search-bar {
+  background: linear-gradient(
+    90deg,
+    #f8f8f8 25%,
+    #e8e8e8 50%,
+    #f8f8f8 75%
+  );
+  background-size: 200% 100%;
+  animation: searchLoading 1.5s ease infinite;
+}
+
+@keyframes searchLoading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Botón de limpiar búsqueda (opcional) */
+.search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ddd;
+  color: #666;
+  border: none;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.search-bar:not(:placeholder-shown) ~ .search-clear {
+  display: flex;
+}
+
+.search-clear:hover {
+  background: #c44545;
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Sugerencias de búsqueda (opcional) */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 1000;
+}
+
+.search-suggestions.active {
+  display: block;
+}
+
+.search-suggestion-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion-item:hover {
+  background: #f8f8f8;
+}
+
+.search-suggestion-icon {
+  color: #999;
+  font-size: 16px;
+}
+
+.search-suggestion-text {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.search-suggestion-category {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .search-container {
+    max-width: 100%;
+    margin: 10px 0;
+  }
+  
+  .search-bar {
+    font-size: 13px;
+    padding: 9px 14px 9px 38px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    order: 3;
+    width: 100%;
+    margin: 12px 0 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar {
+    font-size: 12px;
+    padding: 8px 12px 8px 36px;
+  }
+  
+  .search-icon {
+    left: 12px;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .search-icon::before {
+    font-size: 16px;
+  }
+}
+
+/* ============================================
+   ANIMACIONES ADICIONALES
+============================================ */
+
+/* Pulso en el icono al cargar */
+@keyframes searchPulse {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.1); }
+}
+
+.search-container.searching .search-icon {
+  animation: searchPulse 1s ease infinite;
+}
+
+/* Shake si la búsqueda está vacía */
+@keyframes searchShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.search-bar.error {
+  animation: searchShake 0.3s ease;
+  border-color: #c44545;
+}
+
+/* ============================================
+   TEMA OSCURO (OPCIONAL)
+============================================ */
+@media (prefers-color-scheme: dark) {
+  .search-bar {
+    background: #2c2c2c;
+    border-color: #444;
+    color: white;
+  }
+  
+  .search-bar:focus {
+    background: #333;
+    border-color: #af6d6d;
+  }
+  
+  .search-bar::placeholder {
+    color: #888;
+  }
+  
+  .search-suggestions {
+    background: #2c2c2c;
+    border: 1px solid #444;
+  }
+  
+  .search-suggestion-item {
+    border-color: #444;
+    color: white;
+  }
+  
+  .search-suggestion-item:hover {
+    background: #333;
+  }
+}
