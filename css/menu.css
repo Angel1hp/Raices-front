@@ -125,10 +125,11 @@ body {
 ============================================ */
 #menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 15px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
+  grid-auto-rows: minmax(140px, auto);
 }
 
 /* ============================================
@@ -446,7 +447,7 @@ body {
 ============================================ */
 @media (max-width: 1200px) {
   #menu-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -456,7 +457,7 @@ body {
   }
 
   #menu-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 
