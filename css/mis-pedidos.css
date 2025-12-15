@@ -564,3 +564,102 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* ===========================
+   MODAL: DETALLE (MEJORADO)
+=========================== */
+
+/* Mejorar cuerpo del modal */
+.modal-body {
+  background: #fff;
+}
+
+/* Lista de productos del modal (clases que usa tu JS) */
+.productos-list-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Item producto */
+.producto-item-modal {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  border: 1px solid #eef0f2;
+}
+
+.producto-item-modal img {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #fff;
+  border: 1px solid #eee;
+}
+
+.producto-info-modal h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #212529;
+  margin-bottom: 4px;
+}
+
+.producto-info-modal p {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+/* Precio por item */
+.producto-precio-modal {
+  font-size: 15px;
+  font-weight: 900;
+  color: #c8102e;
+  white-space: nowrap;
+}
+
+/* Resumen pago (clases que usa tu JS) */
+.resumen-pago-modal {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  border: 1px solid #eef0f2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  color: #495057;
+}
+
+.resumen-item span:last-child {
+  font-weight: 800;
+  color: #212529;
+}
+
+.resumen-item.total {
+  padding-top: 12px;
+  margin-top: 6px;
+  border-top: 1px dashed #dfe3e7;
+  font-size: 16px;
+}
+
+.resumen-item.total span:last-child {
+  color: #c8102e;
+}
+
+/* Estado dentro del modal: que se vea más “badge” */
+.modal-body .pedido-estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+}
